@@ -1,0 +1,30 @@
+name: Firefox study
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'firefox_study.py'
+      - 'requirements.txt'
+      - '.github/workflows/firefox-study.yml'
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python firefox_study.py all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firefox-study-output
+          retention-days: 14
+          path: |
+            data/firefox
+            charts/firefox
+            FIREFOX_RESULTS.md

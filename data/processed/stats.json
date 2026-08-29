@@ -1,56 +1,18 @@
 {
+  "primary_window": {
+    "start": "2021-01-01",
+    "end": "2025-12-31"
+  },
+  "primary_exclusion": {
+    "year": 2026,
+    "reason": "documented structural break in Chrome vulnerability discovery and processing",
+    "source": "https://blog.google/security/chrome-stronger-with-every-update/"
+  },
   "snapshot_latest_source_date": "2026-08-25",
-  "coverage_reports": 2121,
-  "coverage_first_date": "2021-01-27",
-  "coverage_last_date": "2026-08-27",
-  "unique_cves_in_overlap": 3844,
-  "cve_first_date": "2021-02-02",
-  "cve_last_date": "2026-08-25",
+  "coverage_reports_all": 2121,
+  "unique_cves_all_overlap": 3844,
+  "primary_quarters": 20,
   "quarterly_same_period_line": {
-    "n": 22,
-    "pearson_r": 0.22086363816004653,
-    "pearson_bootstrap_95pct_ci": [
-      -0.46675373551653165,
-      0.44088868565393957
-    ],
-    "spearman_rho": -0.2782021439598254,
-    "ols_slope_cves_per_coverage_point": 25.62150781796278,
-    "ols_intercept": -1351.5058300357673
-  },
-  "quarterly_same_period_branch": {
-    "n": 22,
-    "pearson_r": 0.13967683298707073,
-    "pearson_bootstrap_95pct_ci": [
-      -0.46162519310677064,
-      0.32717044583363436
-    ],
-    "spearman_rho": -0.3240037164410162,
-    "ols_slope_cves_per_coverage_point": 12.441099418647866,
-    "ols_intercept": -444.70183004438576
-  },
-  "quarterly_next_period_line": {
-    "n": 21,
-    "pearson_r": 0.2232806665730968,
-    "pearson_bootstrap_95pct_ci": [
-      -0.5542384848971249,
-      0.45796041467144566
-    ],
-    "spearman_rho": -0.27252068546614533,
-    "ols_slope_cves_per_coverage_point": 26.575293167215904,
-    "ols_intercept": -1399.7408482091919
-  },
-  "quarterly_next_period_branch": {
-    "n": 21,
-    "pearson_r": 0.18497513120069065,
-    "pearson_bootstrap_95pct_ci": [
-      -0.6200104684987255,
-      0.4059281767794819
-    ],
-    "spearman_rho": -0.3213012377572214,
-    "ols_slope_cves_per_coverage_point": 16.638500992970304,
-    "ols_intercept": -635.3880074676267
-  },
-  "pre_2026_quarterly_same_period_line": {
     "n": 20,
     "pearson_r": -0.2790718129661132,
     "pearson_bootstrap_95pct_ci": [
@@ -61,37 +23,75 @@
     "ols_slope_cves_per_coverage_point": -2.402131533414323,
     "ols_intercept": 207.6503049482026
   },
-  "pre_2026_quarterly_same_period_branch": {
+  "quarterly_same_period_branch": {
     "n": 20,
-    "pearson_r": -0.2755381340516527,
+    "pearson_r": -0.2755381340516526,
     "pearson_bootstrap_95pct_ci": [
-      -0.7153482112396332,
-      0.10269715812672726
+      -0.7153482112396333,
+      0.10269715812672722
     ],
     "spearman_rho": -0.5062155869358453,
     "ols_slope_cves_per_coverage_point": -1.778379316745984,
     "ols_intercept": 151.41233089430938
   },
-  "pre_2026_quarterly_next_period_line": {
+  "quarterly_next_period_line": {
     "n": 19,
     "pearson_r": -0.44761918790964067,
     "pearson_bootstrap_95pct_ci": [
-      -0.7270711235120639,
+      -0.7270711235120637,
       -0.12560466777578436
     ],
     "spearman_rho": -0.5230781863997539,
     "ols_slope_cves_per_coverage_point": -3.9763711116382137,
     "ols_intercept": 298.5693425278213
   },
+  "quarterly_next_period_branch": {
+    "n": 19,
+    "pearson_r": -0.5334621152361976,
+    "pearson_bootstrap_95pct_ci": [
+      -0.7772647985498249,
+      -0.21870115463597814
+    ],
+    "spearman_rho": -0.5819794275573733,
+    "ols_slope_cves_per_coverage_point": -3.55970545,
+    "ols_intercept": 233.96439988
+  },
   "annual_same_period_line": {
     "n": 5,
-    "pearson_r": -0.39379730444488864,
+    "pearson_r": -0.3937973044448886,
     "pearson_bootstrap_95pct_ci": [
       -1.0,
       0.7888409473173661
     ],
     "spearman_rho": -0.7,
-    "ols_slope_cves_per_coverage_point": -10.047448420443509,
-    "ols_intercept": 856.096255792939
+    "ols_slope_cves_per_coverage_point": -10.04744842,
+    "ols_intercept": 856.09625579
+  },
+  "full_series_diagnostic_same_period_line": {
+    "n": 22,
+    "pearson_r": 0.22086363816004653,
+    "pearson_bootstrap_95pct_ci": [
+      -0.4667537355165317,
+      0.4408886856539396
+    ],
+    "spearman_rho": -0.2782021439598254,
+    "ols_slope_cves_per_coverage_point": 25.62150782,
+    "ols_intercept": -1351.50583004
+  },
+  "full_series_diagnostic_next_period_line": {
+    "n": 21,
+    "pearson_r": 0.22328066657309686,
+    "pearson_bootstrap_95pct_ci": [
+      -0.5542384848971249,
+      0.4579604146714456
+    ],
+    "spearman_rho": -0.27252068546614533,
+    "ols_slope_cves_per_coverage_point": 26.57529317,
+    "ols_intercept": -1399.74084821
+  },
+  "structural_break_2026": {
+    "2026Q1": 128,
+    "2026Q2": 1510,
+    "2026Q3": 831
   }
 }

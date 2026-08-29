@@ -1,38 +1,43 @@
 # Testy
 
-A reproducible observational study of whether Chromium unit-test coverage is associated with later Chrome CVE disclosures.
+Reproducible observational studies of whether unit-test coverage is associated with security-vulnerability disclosures in large open-source projects.
 
-**Primary study window: 2021–2025.** 2021 is the first year Chromium generated separate Linux C/C++ unit-only coverage; 2026 is kept in the raw/full-series datasets but excluded from the headline correlation because Chrome documented a major change in vulnerability discovery and processing in early 2026.
+## Results
 
-![Chromium unit-test coverage vs CVEs, 2021–2025](charts/annual_coverage_vs_cves.svg)
+| Project | Coverage window | Same-quarter Pearson r | Coverage Q → CVEs Q+1 | Notes |
+| --- | --- | ---: | ---: | --- |
+| **Chromium** | 2021–2025 | **-0.279** | **-0.448** | 20 same-period quarters; 19 lagged pairs |
+| **Firefox** | 2019 Q4–2025 Q3* | **+0.172** | **+0.195** | 21 available quarters/pairs |
 
-## Result
+\* Firefox has no usable coverage archive for **2024 Q4–2025 Q2**; those quarters are left missing rather than interpolated.
 
-Using Chromium's official Linux C/C++ **Unit Tests Only** coverage reports and unique CVEs first disclosed in **Stable Channel Update for Desktop** posts:
+The projects currently point in different directions. Chromium shows a moderate negative lagged association in its comparable 2021–2025 window; Firefox's quality-gated replication is close to zero and slightly positive. Neither is a causal estimate.
 
-- Same-quarter line coverage vs CVEs, 2021–2025: **Pearson r = -0.279**, Spearman **rho = -0.505** across 20 quarters.
-- Coverage in quarter Q vs CVEs in Q+1, with both quarters inside 2021–2025: **Pearson r = -0.448**, Spearman **rho = -0.523** across 19 pairs.
-- These are observational associations, not causal estimates.
+## Chromium
 
-See [RESULTS.md](RESULTS.md) for the charts, intervals and limitations.
+![Chromium unit-test coverage vs CVEs](charts/annual_coverage_vs_cves.svg)
 
-## Why start at 2021?
+Chromium uses the official Linux C/C++ **Unit Tests Only** coverage series and unique CVEs first disclosed in **Stable Channel Update for Desktop** posts.
 
-Chromium's coverage infrastructure is older, but the metric used here is not. On **27 January 2021**, Chromium landed a commit literally titled **“generate unit test coverage for linux”**, adding `coverage_test_types = ["overall", "unit"]` to the Linux coverage builder. Before that, Linux coverage was an aggregate all-tests stream rather than a separate unit-only measurement.
+- Same-quarter: Pearson **r = -0.279**, Spearman **rho = -0.505** across 20 quarters.
+- Q → Q+1: Pearson **r = -0.448**, Spearman **rho = -0.523** across 19 pairs.
+- [Full Chromium results](RESULTS.md)
+- [Historical coverage boundary](HISTORICAL_DATA.md)
 
-Upstream commit: https://github.com/chromium/chromium/commit/61fe0e40252fdf2475926e560f722b558f14e5e4
+Chromium starts in 2021 because separate Linux unit-only coverage was introduced on **27 January 2021**. It stops before 2026 because Chrome documented a large-scale AI vulnerability-discovery regime change in early 2026.
 
-Our downloaded `Unit Tests Only` history begins on the same date. Pre-2021 aggregate coverage cannot be spliced into this series without changing the independent variable halfway through the experiment. See [HISTORICAL_DATA.md](HISTORICAL_DATA.md) for the audit.
+## Firefox
 
-## Why stop at 2025?
+![Firefox quarterly unit coverage vs CVEs](charts/firefox/quarterly_same_period_scatter.svg)
 
-In July 2026, Google's Chrome Security Team documented that it built a Gemini-based vulnerability-finding harness across the broader Chrome codebase in **early 2026**. By March it was receiving more security bug reports than in all of 2025, and Chrome 149 plus 150 fixed **1,072 security bugs**, more than the prior 23 milestones combined.
+Firefox is reconstructed from Mozilla's original public `mozilla-central` coverage archive. For each sampled revision, Testy unions exact lines covered by **GTest + CppUnitTest + XPCShell**, then divides by the same-revision `all:all` executable-line denominator.
 
-Source: https://blog.google/security/chrome-stronger-with-every-update/
+- Same-quarter: Pearson **r = +0.172**, Spearman **rho = +0.044** across 21 available quarters.
+- Strict calendar Q → Q+1: Pearson **r = +0.195**, Spearman **rho = +0.090** across 21 pairs.
+- IID bootstrap intervals cross zero for both estimates.
+- [Full Firefox results](FIREFOX_RESULTS.md)
 
-That is a structural break in the process producing the CVE count. Mixing 2026 into the primary regression would compare periods with materially different vulnerability-discovery regimes. The cutoff is explicitly post-hoc: the initial analysis exposed the discontinuity, we investigated it, and then separated 2026 rather than silently deleting it.
-
-![2026 structural break](charts/2026_structural_break.svg)
+Mozilla's coverage ingestion broke after September 2024. The public archive contains no usable complete unit-suite coverage from October 2024 through June 2025, so those periods are explicitly absent. Firefox predictor coverage also stops at September 2025 because the report's executable-line denominator changes sharply in November 2025.
 
 ## Reproduce
 
@@ -40,32 +45,37 @@ That is a structural break in the process producing the CVE count. Mixing 2026 i
 python -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
+
+# Chromium
 python study.py all
+
+# Firefox — downloads and reconstructs original Mozilla coverage reports
+python firefox_quality_study.py all
 ```
 
-Or rerun stages independently:
-
-```bash
-python study.py collect
-python study.py analyze
-python study.py charts
-```
-
-`collect` always downloads the latest available data, including 2026+. `analyze` writes the 2021–2025 primary files plus `*_all.csv` full-series diagnostics.
+The Firefox workflow also runs the regression tests before rebuilding the study.
 
 ## Data
 
-- `data/raw/chromium_unit_coverage_daily.csv` — official unit-test coverage reports.
-- `data/raw/chrome_stable_desktop_cves.csv` — unique CVEs at first Stable Desktop disclosure.
-- `data/processed/annual.csv`, `quarterly.csv`, `monthly.csv` — **primary 2021–2025** datasets.
-- `data/processed/quarterly_lag1.csv` — primary Q → Q+1 dataset, entirely within 2021–2025.
-- `data/processed/*_all.csv` — retained full series including 2026.
-- `data/processed/stats.json` — primary statistics plus full-series diagnostics.
+Chromium data lives under `data/raw` and `data/processed`. Firefox data lives under `data/firefox/raw` and `data/firefox/processed`.
+
+Firefox retains the candidate manifest and quality audit used to choose monthly CI reports. Missing coverage is never interpolated, and lagging uses the actual next calendar quarter rather than the next row with available coverage.
 
 ## Sources
 
-- Chromium coverage dashboard: https://analysis.chromium.org/coverage/p/chromium
-- Chromium coverage documentation: https://chromium.googlesource.com/chromium/src/+/HEAD/docs/testing/code_coverage.md
+### Chromium
+
+- Coverage dashboard: https://analysis.chromium.org/coverage/p/chromium
+- Coverage documentation: https://chromium.googlesource.com/chromium/src/+/HEAD/docs/testing/code_coverage.md
 - Linux unit-only coverage launch: https://github.com/chromium/chromium/commit/61fe0e40252fdf2475926e560f722b558f14e5e4
 - Chrome Releases: https://chromereleases.googleblog.com/
 - 2026 discovery-regime change: https://blog.google/security/chrome-stronger-with-every-update/
+
+### Firefox
+
+- Historical raw coverage: `gs://relman-code-coverage-prod/mozilla-central`
+- Coverage documentation: https://firefox-source-docs.mozilla.org/tools/code-coverage/index.html
+- Firefox security advisories: https://www.mozilla.org/en-US/security/known-vulnerabilities/firefox/
+- GTest: https://firefox-source-docs.mozilla.org/gtest/index.html
+- XPCShell: https://firefox-source-docs.mozilla.org/testing/xpcshell/index.html
+- Taskcluster test attributes: https://firefox-source-docs.mozilla.org/taskcluster/attributes.html

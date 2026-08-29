@@ -1,34 +1,52 @@
 # Results
 
-This is a descriptive observational study of Chromium's official Linux C/C++ **Unit Tests Only** coverage reports and CVEs first disclosed in Google Chrome **Stable Channel Update for Desktop** posts.
+The primary study window is **2021–2025**. Chromium's 2026 data remains downloaded and reproducible, but it is excluded from the headline correlation because Chrome documented a major change in vulnerability discovery and processing in early 2026.
 
-## Current result
+## Primary result: 2021–2025
 
-Across 22 complete quarters, same-quarter unit-test **line coverage vs CVE count** has Pearson **r = +0.221** (bootstrap 95% CI -0.467 to +0.441); Spearman rho = -0.278.
+Across **20 complete quarters**, same-quarter unit-test **line coverage vs reported CVEs** has Pearson **r = -0.279** (naive bootstrap 95% CI **-0.715 to +0.122**) and Spearman **rho = -0.505**.
 
-For unit-test **branch coverage**, same-quarter Pearson r = +0.140.
+Unit-test **branch coverage vs reported CVEs** has Pearson **r = -0.276**.
 
-Using coverage in quarter Q to predict CVEs first disclosed in Q+1 gives Pearson **r = +0.223** across 21 quarter pairs (bootstrap 95% CI -0.554 to +0.458).
+Coverage in quarter Q versus CVEs first disclosed in **Q+1**, with both quarters restricted to 2021–2025, has Pearson **r = -0.448** across **19 quarter pairs** (naive bootstrap 95% CI **-0.727 to -0.126**) and Spearman **rho = -0.523**.
 
-### 2026 disclosure-regime sensitivity
+These are observational associations, not causal estimates. The bootstrap is an IID quarter resample and does not fully account for time-series autocorrelation.
 
-Chrome's 2026 Stable Desktop posts contain an abrupt, order-of-magnitude rise in CVEs/security fixes in several releases. Because coverage did not move comparably, those two complete 2026 quarters have very high leverage on Pearson correlation. Restricting the comparable baseline to **2021–2025** changes same-quarter line-coverage Pearson r to **-0.279** (naive bootstrap 95% CI -0.715 to +0.122; Spearman rho **-0.505**) across 20 quarters. Coverage in Q vs CVEs in Q+1 becomes **r = -0.448** (naive bootstrap 95% CI -0.727 to -0.126) across 19 pairs.
+![Primary annual chart](charts/annual_coverage_vs_cves.svg)
 
-This sensitivity result is more consistent with the hypothesis that more unit-test coverage accompanies fewer CVE disclosures, but the design is observational. The bootstrap is an IID quarter resample and therefore does not fully account for time-series autocorrelation; it should not be interpreted as causal evidence.
+![Primary quarterly scatter](charts/quarterly_same_period_scatter.svg)
 
-These correlations **do not establish that unit testing causes or prevents vulnerabilities**. Coverage changes with code composition and test selection; CVE disclosure depends on vulnerability discovery, researcher attention, release timing, fuzzing, sanitizers, code churn, third-party dependencies, and many other factors.
+![Primary lagged scatter](charts/quarterly_lag1_scatter.svg)
 
-![Annual unit test coverage and CVEs](charts/annual_coverage_vs_cves.svg)
+## Why 2026 is separate
 
-![Quarterly scatter](charts/quarterly_same_period_scatter.svg)
+Google's Chrome Security Team says it built a Gemini-based vulnerability-finding harness across the broader Chrome codebase in **early 2026**. By March, Chrome was receiving more bug reports than it had in all of 2025, and Chrome 149 plus 150 fixed **1,072 security bugs**, more than the prior 23 milestones combined.
 
-![Pre-2026 sensitivity scatter](charts/quarterly_pre_2026_scatter.svg)
+Source: https://blog.google/security/chrome-stronger-with-every-update/
 
-![Lagged quarterly scatter](charts/quarterly_lag1_scatter.svg)
+That is a documented structural break in the process generating the dependent variable: the rate at which vulnerabilities are found, processed, fixed and disclosed changed sharply. Including 2026 in the primary correlation would mix two different discovery regimes.
 
-![Coverage history](charts/unit_coverage_history.svg)
+Our downloaded Stable Desktop data makes the discontinuity obvious:
 
-## Annual data
+| Quarter | CVEs first disclosed |
+| --- | ---: |
+| 2025 Q1 | 45 |
+| 2025 Q2 | 38 |
+| 2025 Q3 | 55 |
+| 2025 Q4 | 54 |
+| 2026 Q1 | 128 |
+| 2026 Q2 | 1,510 |
+| 2026 Q3* | 831 |
+
+\* partial quarter in the current snapshot.
+
+![2026 structural break](charts/2026_structural_break.svg)
+
+The raw and `*_all.csv` datasets retain 2026 so the exclusion is transparent and reversible. The cutoff was chosen **after the initial analysis revealed the discontinuity**, so this is explicitly a post-hoc comparability decision rather than a preregistered exclusion.
+
+For reference, blindly including the two complete 2026 quarters flips the same-quarter Pearson correlation from **-0.279** to **+0.221** even though unit-test coverage barely changes. That is why the full series is retained as a diagnostic rather than used as the headline estimate.
+
+## Annual primary data
 
 | Year | Mean line coverage | Mean branch coverage | Unique CVEs first reported |
 | --- | ---: | ---: | ---: |
@@ -37,20 +55,19 @@ These correlations **do not establish that unit testing causes or prevents vulne
 | 2023 | 55.63% | 44.64% | 247 |
 | 2024 | 59.86% | 48.56% | 244 |
 | 2025 | 60.90% | 50.62% | 192 |
-| 2026 (partial) | 60.66% | 49.26% | 2469 |
 
-## Dataset scope
+## Sources
 
-- Coverage reports in overlap: **2,121**, from **2021-01-27** through **2026-08-27**.
-- Unique Stable Desktop CVEs in overlap: **3,844**, from **2021-02-02** through **2026-08-25**.
-- Coverage source: https://analysis.chromium.org/coverage/p/chromium
-- CVE source: https://chromereleases.googleblog.com/
-- Chromium coverage documentation: https://chromium.googlesource.com/chromium/src/+/HEAD/docs/testing/code_coverage.md
+- Chromium coverage dashboard: https://analysis.chromium.org/coverage/p/chromium
+- Chromium coverage methodology: https://chromium.googlesource.com/chromium/src/+/HEAD/docs/testing/code_coverage.md
+- Chrome Stable Desktop disclosures: https://chromereleases.googleblog.com/
+- Google's explanation of the 2026 AI vulnerability-discovery change: https://blog.google/security/chrome-stronger-with-every-update/
 
 ## Interpretation limits
 
-1. The dependent variable is **reported CVEs**, not latent vulnerabilities. More scrutiny can create more CVE disclosures even if underlying security improves.
-2. Chrome Stable Desktop advisories are the authoritative disclosure source used here, but some listed CVEs can reside in third-party code shipped by Chrome rather than Chromium-owned code.
-3. The official dashboard's `Unit Tests Only` coverage is much closer to the research question than aggregate test coverage, but it is still a generated Linux C/C++ coverage corpus rather than a statement that every unit test in every platform ran successfully.
-4. Same-period correlation has reverse-causality risk. The Q→Q+1 analysis reduces that problem but does not remove confounding.
-5. A stronger follow-up would map each CVE to its introducing/fixing Chromium component and compare component-level historical coverage while controlling for LOC, churn, contributors, fuzzing, and component exposure.
+1. CVEs measure discovered and disclosed vulnerabilities, not latent vulnerability prevalence.
+2. Chrome Stable Desktop posts can include third-party code shipped with Chrome.
+3. Coverage is Linux C/C++ `Unit Tests Only` coverage, not every test on every Chrome platform.
+4. The IID bootstrap does not account for time-series autocorrelation.
+5. Coverage, CVEs, code churn, fuzzing, sanitizers, researcher attention and architectural hardening can move together.
+6. A stronger next stage would map CVEs to Chromium components and compare component-level historical coverage while controlling for LOC, churn, contributors, fuzzing and exposure.

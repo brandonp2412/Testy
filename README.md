@@ -13,9 +13,41 @@ Reproducible observational studies of whether unit-test coverage is associated w
 
 The projects currently point in different directions. Chromium shows a moderate negative lagged association in its comparable 2021–2025 window; Firefox's quality-gated replication is close to zero and slightly positive. Neither is a causal estimate.
 
-## Chromium
+## Direct visual comparison
 
-![Chromium unit-test coverage vs CVEs](charts/annual_coverage_vs_cves.svg)
+The paired figures below use the same orientation in both projects:
+
+**X-axis = unit-test coverage (%) · Y-axis = CVEs reported**
+
+### Same quarter
+
+<table>
+<tr>
+<th>Chromium</th>
+<th>Firefox</th>
+</tr>
+<tr>
+<td><img src="charts/quarterly_same_period_scatter.svg" alt="Chromium quarterly unit-test coverage vs same-quarter CVEs"></td>
+<td><img src="charts/firefox/quarterly_same_period_scatter.svg" alt="Firefox quarterly unit-test coverage vs same-quarter CVEs"></td>
+</tr>
+</table>
+
+### Coverage in Q → CVEs in Q+1
+
+<table>
+<tr>
+<th>Chromium</th>
+<th>Firefox</th>
+</tr>
+<tr>
+<td><img src="charts/quarterly_lag1_scatter.svg" alt="Chromium unit-test coverage vs next-quarter CVEs"></td>
+<td><img src="charts/firefox/quarterly_lag1_scatter.svg" alt="Firefox unit-test coverage vs next-quarter CVEs"></td>
+</tr>
+</table>
+
+The absolute coverage ranges differ between the projects because the coverage metrics come from different test infrastructures, so the X-axis numeric ranges are not forced to be identical. What is directly comparable here is the orientation and direction/strength of the within-project relationship.
+
+## Chromium
 
 Chromium uses the official Linux C/C++ **Unit Tests Only** coverage series and unique CVEs first disclosed in **Stable Channel Update for Desktop** posts.
 
@@ -27,8 +59,6 @@ Chromium uses the official Linux C/C++ **Unit Tests Only** coverage series and u
 Chromium starts in 2021 because separate Linux unit-only coverage was introduced on **27 January 2021**. It stops before 2026 because Chrome documented a large-scale AI vulnerability-discovery regime change in early 2026.
 
 ## Firefox
-
-![Firefox quarterly unit coverage vs CVEs](charts/firefox/quarterly_same_period_scatter.svg)
 
 Firefox is reconstructed from Mozilla's original public `mozilla-central` coverage archive. For each sampled revision, Testy unions exact lines covered by **GTest + CppUnitTest + XPCShell**, then divides by the same-revision `all:all` executable-line denominator.
 

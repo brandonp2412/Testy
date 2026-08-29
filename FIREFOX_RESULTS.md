@@ -10,11 +10,11 @@ For each month, Testy considers up to five original revisions containing `all:gt
 
 The exposure window is **2019 Q4 through 2025 Q3**, but Mozilla's archive has no usable coverage from **2024 Q4 through 2025 Q2**. Those quarters are missing rather than interpolated.
 
-Across **21 available quality-gated quarters**, same-quarter Firefox unit-suite coverage vs CVEs has Pearson **r = +0.172** (naive IID bootstrap 95% CI -0.311 to +0.591) and Spearman **rho = +0.044**.
+Across **21 available quality-gated quarters**, same-quarter Firefox unit-suite coverage vs CVEs has Pearson **r = +0.172** (naive IID bootstrap 95% CI **-0.311 to +0.591**) and Spearman **rho = +0.044**.
 
-For the lagged analysis, each coverage quarter Q is matched to the **actual calendar Q+1**, even when Q+1 has no coverage measurement. Coverage in Q versus CVEs first disclosed in Q+1 has Pearson **r = +0.195** across **21 quarter pairs** (naive IID bootstrap 95% CI -0.154 to +0.499); Spearman **rho = +0.090**.
+For the lagged analysis, each coverage quarter Q is matched to the **actual calendar Q+1**, even when Q+1 has no coverage measurement. Coverage in Q versus CVEs first disclosed in Q+1 has Pearson **r = +0.195** across **21 quarter pairs** (naive IID bootstrap 95% CI **-0.154 to +0.499**); Spearman **rho = +0.090**.
 
-These are observational associations, not causal estimates.
+These are observational associations, not causal estimates. Both bootstrap intervals cross zero.
 
 ![Firefox quarterly scatter](charts/firefox/quarterly_same_period_scatter.svg)
 
@@ -27,11 +27,12 @@ These are observational associations, not causal estimates.
 ## Data-quality boundaries
 
 - Original coverage archive begins in September 2019.
-- **2024-10 through 2025-06:** no usable complete unit-suite coverage revisions exist. Linux-specific streams have the same gap.
-- Predictor coverage stops at **2025-09-30**. Q4 2025 CVEs remain usable as the outcome for Q3 coverage without treating late-2025 coverage as comparable.
+- **2024-10 through 2025-06:** no usable complete unit-suite coverage revisions exist. Linux-specific streams have the same gap. Mozilla Bugzilla records that code-coverage ingestion was broken after September 2024: https://bugzilla.mozilla.org/show_bug.cgi?id=1925873
+- Predictor coverage stops at **2025-09-30**. The same-revision `all:all` executable-line denominator is 4,764,056 in July 2025, 4,801,463 in August, 4,866,735 in September, and 4,895,712 in October, then abruptly falls to **1,705,447 in November** and **1,744,327 in December**. That is treated as a measurement-scope break rather than a real ~65% codebase contraction.
+- Q4 2025 CVEs remain usable as the outcome for Q3 coverage because Q4 coverage itself is not needed for that lagged observation.
 - Missing primary quarters: **2024Q4, 2025Q1, 2025Q2**.
 - Isolated selected months rejected by longitudinal denominator checking: **none**.
-- Candidate report attempts rejected by static quality gates: **0**.
+- Candidate report attempts rejected by static quality gates: **0**; robust candidate ranking selected complete-looking reports before fallback candidates were needed.
 
 No missing coverage is interpolated, and lagging never jumps across a coverage gap.
 
@@ -59,6 +60,7 @@ Only years with at least 10 quality-gated monthly coverage samples are shown.
 - Historical raw coverage: `gs://relman-code-coverage-prod/mozilla-central`
 - Mozilla coverage documentation: https://firefox-source-docs.mozilla.org/tools/code-coverage/index.html
 - Firefox advisories: https://www.mozilla.org/en-US/security/known-vulnerabilities/firefox/
+- Mozilla coverage-ingestion break: https://bugzilla.mozilla.org/show_bug.cgi?id=1925873
 - GTest documentation: https://firefox-source-docs.mozilla.org/gtest/index.html
 - XPCShell documentation: https://firefox-source-docs.mozilla.org/testing/xpcshell/index.html
 - Taskcluster unit-test metadata: https://firefox-source-docs.mozilla.org/taskcluster/attributes.html

@@ -2,3 +2,4 @@ beautifulsoup4>=4.12
 numpy>=2.0
 pandas>=2.2
 requests>=2.31
+zstandard>=0.23

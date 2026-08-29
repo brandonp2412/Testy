@@ -1,0 +1,23 @@
+name: Firefox coverage discovery
+
+on:
+  push:
+    paths:
+      - 'tools/firefox_discover.py'
+      - '.github/workflows/firefox-discover.yml'
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - run: python tools/firefox_discover.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firefox-coverage-discovery
+          path: firefox-discovery.json

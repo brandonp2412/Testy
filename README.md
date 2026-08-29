@@ -15,37 +15,31 @@ The projects currently point in different directions. Chromium shows a moderate 
 
 ## Direct visual comparison
 
-The paired figures below use the same orientation in both projects:
+All comparison plots use the same orientation:
 
 **X-axis = unit-test coverage (%) · Y-axis = CVEs reported**
 
 ### Same quarter
 
-<table>
-<tr>
-<th>Chromium</th>
-<th>Firefox</th>
-</tr>
-<tr>
-<td><img src="charts/quarterly_same_period_scatter.svg" alt="Chromium quarterly unit-test coverage vs same-quarter CVEs"></td>
-<td><img src="charts/firefox/quarterly_same_period_scatter.svg" alt="Firefox quarterly unit-test coverage vs same-quarter CVEs"></td>
-</tr>
-</table>
+#### Chromium
+
+![Chromium quarterly unit-test coverage vs same-quarter CVEs](charts/quarterly_same_period_scatter.svg)
+
+#### Firefox
+
+![Firefox quarterly unit-test coverage vs same-quarter CVEs](charts/firefox/quarterly_same_period_scatter.svg)
 
 ### Coverage in Q → CVEs in Q+1
 
-<table>
-<tr>
-<th>Chromium</th>
-<th>Firefox</th>
-</tr>
-<tr>
-<td><img src="charts/quarterly_lag1_scatter.svg" alt="Chromium unit-test coverage vs next-quarter CVEs"></td>
-<td><img src="charts/firefox/quarterly_lag1_scatter.svg" alt="Firefox unit-test coverage vs next-quarter CVEs"></td>
-</tr>
-</table>
+#### Chromium
 
-The absolute coverage ranges differ between the projects because the coverage metrics come from different test infrastructures, so the X-axis numeric ranges are not forced to be identical. What is directly comparable here is the orientation and direction/strength of the within-project relationship.
+![Chromium unit-test coverage vs next-quarter CVEs](charts/quarterly_lag1_scatter.svg)
+
+#### Firefox
+
+![Firefox unit-test coverage vs next-quarter CVEs](charts/firefox/quarterly_lag1_scatter.svg)
+
+The charts are stacked at full README width so they remain readable on mobile. The absolute coverage ranges differ between the projects because the coverage metrics come from different test infrastructures, so the X-axis numeric ranges are not forced to be identical. What is directly comparable is the orientation and direction/strength of the within-project relationship.
 
 ## Chromium
 

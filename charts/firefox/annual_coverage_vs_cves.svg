@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+<rect width="1400" height="820" fill="#0b1020"/>
+<text x="70" y="72" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" font-weight="700">Firefox unit-suite coverage vs CVE disclosures</text>
+<text x="70" y="108" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">Annual view: years with ≥10 quality-gated monthly coverage samples · unit coverage is the union of GTest, CppUnitTest and XPCShell</text>
+<rect x="110" y="150" width="1180" height="560" rx="18" fill="#11182b"/>
+<line x1="110" y1="710.0" x2="1290" y2="710.0" stroke="#26314d"/>
+<text x="94" y="715.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">31.7%</text>
+<line x1="110" y1="598.0" x2="1290" y2="598.0" stroke="#26314d"/>
+<text x="94" y="603.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">32.6%</text>
+<line x1="110" y1="486.0" x2="1290" y2="486.0" stroke="#26314d"/>
+<text x="94" y="491.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">33.5%</text>
+<line x1="110" y1="374.0" x2="1290" y2="374.0" stroke="#26314d"/>
+<text x="94" y="379.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">34.4%</text>
+<line x1="110" y1="262.0" x2="1290" y2="262.0" stroke="#26314d"/>
+<text x="94" y="267.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">35.3%</text>
+<line x1="110" y1="150.0" x2="1290" y2="150.0" stroke="#26314d"/>
+<text x="94" y="155.0" text-anchor="end" fill="#69a7ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">36.2%</text>
+<text x="1306" y="715.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">0</text>
+<text x="1306" y="603.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">41</text>
+<text x="1306" y="491.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">82</text>
+<text x="1306" y="379.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">123</text>
+<text x="1306" y="267.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">164</text>
+<text x="1306" y="155.0" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">205</text>
+<rect x="201.4" y="325.4" width="112.1" height="384.6" rx="7" fill="#ff7b7b" opacity="0.72"/>
+<text x="257.5" y="315.4" text-anchor="middle" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="600">141</text>
+<rect x="496.4" y="374.5" width="112.1" height="335.5" rx="7" fill="#ff7b7b" opacity="0.72"/>
+<text x="552.5" y="364.5" text-anchor="middle" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="600">123</text>
+<rect x="791.5" y="287.2" width="112.1" height="422.8" rx="7" fill="#ff7b7b" opacity="0.72"/>
+<text x="847.5" y="277.2" text-anchor="middle" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="600">155</text>
+<rect x="1086.5" y="235.4" width="112.1" height="474.6" rx="7" fill="#ff7b7b" opacity="0.72"/>
+<text x="1142.5" y="225.4" text-anchor="middle" fill="#ff7b7b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="600">174</text>
+<polyline points="257.5,584.0 552.5,344.7 847.5,320.5 1142.5,276.0" fill="none" stroke="#69a7ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="257.5" cy="584.0" r="6" fill="#69a7ff" stroke="#0b1020" stroke-width="3"/>
+<text x="257.5" y="745" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">2020</text>
+<circle cx="552.5" cy="344.7" r="6" fill="#69a7ff" stroke="#0b1020" stroke-width="3"/>
+<text x="552.5" y="745" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">2021</text>
+<circle cx="847.5" cy="320.5" r="6" fill="#69a7ff" stroke="#0b1020" stroke-width="3"/>
+<text x="847.5" y="745" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">2022</text>
+<circle cx="1142.5" cy="276.0" r="6" fill="#69a7ff" stroke="#0b1020" stroke-width="3"/>
+<text x="1142.5" y="745" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">2023</text>
+<circle cx="130" cy="126" r="6" fill="#69a7ff"/><text x="144" y="132" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">Unit-suite line coverage</text>
+<rect x="375" y="119" width="14" height="14" rx="3" fill="#ff7b7b"/><text x="399" y="132" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">CVEs reported</text>
+</svg>

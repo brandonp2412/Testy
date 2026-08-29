@@ -1,0 +1,78 @@
+{
+  "metric": "union of lines covered by all:gtest, all:cppunittest and all:xpcshell divided by same-revision all:all linesTotal",
+  "primary_coverage_window": {
+    "start": "2019-10-01",
+    "end": "2025-09-30"
+  },
+  "lag_outcome_end": "2025-12-31",
+  "coverage_archive_first_sample": "2019-09",
+  "coverage_archive_last_sample": "2026-08",
+  "selected_monthly_samples": 74,
+  "quality_eligible_monthly_samples": 74,
+  "primary_quality_eligible_monthly_samples": 63,
+  "quality_excluded_months": [],
+  "candidate_attempts_rejected": 0,
+  "missing_primary_months": [
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06"
+  ],
+  "missing_primary_quarters": [
+    "2024Q4",
+    "2025Q1",
+    "2025Q2"
+  ],
+  "known_archive_gap": {
+    "start": "2024-10",
+    "end": "2025-06"
+  },
+  "late_2025_denominators": {
+    "2025-07": 4764056,
+    "2025-08": 4801463,
+    "2025-09": 4866735,
+    "2025-10": 4895712,
+    "2025-11": 1705447,
+    "2025-12": 1744327
+  },
+  "same_period_unique_cves": 921,
+  "lag_window_unique_cves": 967,
+  "quarterly_same_period": {
+    "n": 21,
+    "pearson_r": 0.1716572679517728,
+    "pearson_bootstrap_95pct_ci": [
+      -0.3106566127606409,
+      0.5906322994981597
+    ],
+    "spearman_rho": 0.043605710268199635,
+    "ols_slope_cves_per_coverage_point": 1.3356062258589863,
+    "ols_intercept": -8.041978312595248
+  },
+  "quarterly_next_period": {
+    "n": 21,
+    "pearson_r": 0.19473609134089018,
+    "pearson_bootstrap_95pct_ci": [
+      -0.1539067390181021,
+      0.4988549172134636
+    ],
+    "spearman_rho": 0.08975621621558007,
+    "ols_slope_cves_per_coverage_point": 1.4798920319428255,
+    "ols_intercept": -11.927128973297219
+  },
+  "annual_same_period": {
+    "n": 4,
+    "pearson_r": 0.4098090046652128,
+    "pearson_bootstrap_95pct_ci": [
+      -1.0,
+      1.0
+    ],
+    "spearman_rho": 0.7999999999999999,
+    "ols_slope_cves_per_coverage_point": 8.078175207285753,
+    "ols_intercept": -129.14410109509683
+  }
+}

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+<rect width="1400" height="820" fill="#0b1020"/>
+<text x="70" y="72" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" font-weight="700">Does Firefox unit coverage predict next-quarter CVEs?</text>
+<text x="70" y="108" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">Strict calendar Q→Q+1 outcomes · coverage gaps never skip forward</text>
+<rect x="120" y="150" width="1210" height="570" rx="18" fill="#11182b"/>
+<line x1="120" y1="720.0" x2="1330" y2="720.0" stroke="#26314d"/>
+<text x="102" y="725.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">19</text>
+<line x1="120" y1="606.0" x2="1330" y2="606.0" stroke="#26314d"/>
+<text x="102" y="611.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">27</text>
+<line x1="120" y1="492.0" x2="1330" y2="492.0" stroke="#26314d"/>
+<text x="102" y="497.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">35</text>
+<line x1="120" y1="378.0" x2="1330" y2="378.0" stroke="#26314d"/>
+<text x="102" y="383.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">42</text>
+<line x1="120" y1="264.0" x2="1330" y2="264.0" stroke="#26314d"/>
+<text x="102" y="269.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">50</text>
+<line x1="120" y1="150.0" x2="1330" y2="150.0" stroke="#26314d"/>
+<text x="102" y="155.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">58</text>
+<text x="120.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">31.2%</text>
+<text x="362.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">32.2%</text>
+<text x="604.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">33.2%</text>
+<text x="846.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">34.1%</text>
+<text x="1088.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">35.1%</text>
+<text x="1330.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">36.1%</text>
+<line x1="120.0" y1="499.0" x2="1330.0" y2="389.7" stroke="#ff7b7b" stroke-width="4" stroke-linecap="round"/>
+<circle cx="353.0" cy="561.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="362.0" y="552.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2019Q4</text>
+<circle cx="237.1" cy="412.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="246.1" y="403.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2020Q1</text>
+<circle cx="415.7" cy="590.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="424.7" y="581.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2020Q2</text>
+<circle cx="590.4" cy="368.3" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="599.4" y="359.3" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2020Q3</text>
+<circle cx="764.6" cy="457.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="773.6" y="448.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2020Q4</text>
+<circle cx="832.3" cy="635.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="841.3" y="626.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2021Q1</text>
+<circle cx="1050.8" cy="605.5" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1059.8" y="596.5" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2021Q2</text>
+<circle cx="1212.9" cy="501.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1221.9" y="492.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2021Q3</text>
+<circle cx="756.7" cy="412.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="765.7" y="403.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2021Q4</text>
+<circle cx="937.6" cy="205.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="946.6" y="196.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2022Q1</text>
+<circle cx="860.3" cy="664.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="869.3" y="655.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2022Q2</text>
+<circle cx="1074.5" cy="442.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1083.5" y="433.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2022Q3</text>
+<circle cx="1166.8" cy="383.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1175.8" y="374.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2022Q4</text>
+<circle cx="1086.9" cy="427.6" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1095.9" y="418.6" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2023Q1</text>
+<circle cx="1050.6" cy="205.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1059.6" y="196.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2023Q2</text>
+<circle cx="1135.5" cy="427.6" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1144.5" y="418.6" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2023Q3</text>
+<circle cx="1108.8" cy="397.9" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1117.8" y="388.9" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2023Q4</text>
+<circle cx="900.3" cy="294.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="909.3" y="285.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2024Q1</text>
+<circle cx="766.9" cy="397.9" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="775.9" y="388.9" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2024Q2</text>
+<circle cx="903.3" cy="368.3" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="912.3" y="359.3" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2024Q3</text>
+<circle cx="768.0" cy="323.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="777.0" y="314.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11">2025Q3</text>
+<text x="144" y="188" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600">Pearson r = +0.195 · n = 21</text>
+<text x="725.0" y="788" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17">Firefox unit-suite line coverage</text>
+<text transform="translate(32 435.0) rotate(-90)" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17">CVEs reported in Q+1</text>
+</svg>

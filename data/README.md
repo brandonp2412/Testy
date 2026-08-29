@@ -22,8 +22,21 @@ Source: https://chromereleases.googleblog.com/
 
 The dataset includes the original post URL for every CVE so individual observations can be audited. `component_hint` is a best-effort string parsed from the disclosure description and is not used in the primary analysis.
 
-## Processed data
+## Primary processed data: 2021–2025
 
-Processed CSVs aggregate daily coverage and CVE disclosure dates by month, quarter, and year. The primary statistical analysis uses complete quarters only. `quarterly_lag1.csv` matches coverage in quarter Q to CVEs disclosed in Q+1.
+`annual.csv`, `quarterly.csv`, `monthly.csv` and `quarterly_lag1.csv` are the primary study datasets and stop at **31 December 2025**. The lagged dataset only contains Q → Q+1 pairs when both quarters fall inside 2021–2025.
 
-The collector intentionally preserves 2026 rather than silently excluding it. Chrome's 2026 release posts show an abrupt jump in the number of security fixes/CVEs in several releases, so the analysis reports both the complete available series and a clearly labelled 2021–2025 sensitivity analysis.
+The primary cutoff exists because Google documented a major change in Chrome's vulnerability-discovery process in early 2026: a Gemini-based vulnerability-finding harness was scaled across the Chrome codebase, and the resulting report/fix volume changed sharply.
+
+Source: https://blog.google/security/chrome-stronger-with-every-update/
+
+## Full-series diagnostics
+
+The raw data is never truncated. Full processed series including 2026 are retained separately as:
+
+- `annual_all.csv`
+- `quarterly_all.csv`
+- `monthly_all.csv`
+- `quarterly_lag1_all.csv`
+
+This makes the 2026 exclusion transparent and reversible. It is a post-hoc comparability decision made after the initial analysis exposed the discontinuity, not a preregistered exclusion.

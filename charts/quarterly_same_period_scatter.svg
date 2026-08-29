@@ -1,72 +1,68 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
 <rect width="1400" height="820" fill="#0b1020"/>
-<text x="70" y="72" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" font-weight="700">Quarterly coverage vs CVE disclosures</text>
-<text x="70" y="108" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">Complete quarters only; association is descriptive, not causal</text>
+<text x="70" y="72" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" font-weight="700">Quarterly unit-test coverage vs CVE disclosures</text>
+<text x="70" y="108" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">Primary analysis: complete quarters in 2021–2025 · descriptive, not causal</text>
 <rect x="120" y="150" width="1210" height="570" rx="18" fill="#11182b"/>
 <line x1="120" y1="720.0" x2="1330" y2="720.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="726.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">0</text>
+<text x="102" y="726.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">27</text>
 <line x1="120" y1="606.0" x2="1330" y2="606.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="612.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">337</text>
+<text x="102" y="612.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">50</text>
 <line x1="120" y1="492.0" x2="1330" y2="492.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="498.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">675</text>
+<text x="102" y="498.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">73</text>
 <line x1="120" y1="378.0" x2="1330" y2="378.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="384.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">1012</text>
+<text x="102" y="384.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">96</text>
 <line x1="120" y1="264.0" x2="1330" y2="264.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="270.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">1349</text>
+<text x="102" y="270.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">119</text>
 <line x1="120" y1="150.0" x2="1330" y2="150.0" stroke="#26314d" stroke-width="1"/>
-<text x="102" y="156.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">1687</text>
+<text x="102" y="156.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">142</text>
 <text x="120.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">52.4%</text>
 <text x="362.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">54.3%</text>
 <text x="604.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">56.2%</text>
 <text x="846.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">58.1%</text>
 <text x="1088.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">60.0%</text>
 <text x="1330.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">61.8%</text>
-<line x1="120.0" y1="723.2" x2="1330.0" y2="641.2" stroke="#ff7b7b" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
-<circle cx="237.1" cy="700.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="247.1" y="690.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q1</text>
-<circle cx="259.3" cy="689.9" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="269.3" y="679.9" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q2</text>
-<circle cx="340.7" cy="687.9" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="350.7" y="677.9" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q3</text>
-<circle cx="631.6" cy="696.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="641.6" y="686.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q4</text>
-<circle cx="1011.4" cy="675.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1021.4" y="665.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q1</text>
-<circle cx="816.0" cy="689.6" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="826.0" y="679.6" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q2</text>
-<circle cx="844.5" cy="686.5" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="854.5" y="676.5" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q3</text>
-<circle cx="889.2" cy="700.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="899.2" y="690.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q4</text>
-<circle cx="559.3" cy="699.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="569.3" y="689.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q1</text>
-<circle cx="473.0" cy="699.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="483.0" y="689.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q2</text>
-<circle cx="514.6" cy="696.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="524.6" y="686.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q3</text>
-<circle cx="610.3" cy="701.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="620.3" y="691.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q4</text>
-<circle cx="1033.1" cy="701.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1043.1" y="691.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q1</text>
-<circle cx="1070.8" cy="695.3" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1080.8" y="685.3" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q2</text>
-<circle cx="1070.8" cy="695.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1080.8" y="685.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q3</text>
-<circle cx="1117.5" cy="705.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1127.5" y="695.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q4</text>
-<circle cx="1212.1" cy="704.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1222.1" y="694.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q1</text>
-<circle cx="1211.8" cy="707.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1221.8" y="697.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q2</text>
-<circle cx="1212.9" cy="701.4" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1222.9" y="691.4" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q3</text>
-<circle cx="1195.7" cy="701.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1205.7" y="691.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q4</text>
-<circle cx="1191.6" cy="676.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1201.6" y="666.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2026Q1</text>
-<circle cx="1199.7" cy="209.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
-<text x="1209.7" y="199.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2026Q2</text>
-<text x="144" y="188" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600">Pearson r = +0.221 · n = 22</text>
+<line x1="120.0" y1="448.2" x2="1330.0" y2="560.7" stroke="#ff7b7b" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+<circle cx="237.1" cy="561.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="247.1" y="551.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q1</text>
+<circle cx="259.3" cy="412.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="269.3" y="402.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q2</text>
+<circle cx="340.7" cy="383.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="350.7" y="373.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q3</text>
+<circle cx="631.6" cy="501.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="641.6" y="491.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q4</text>
+<circle cx="1011.4" cy="205.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1021.4" y="195.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q1</text>
+<circle cx="816.0" cy="407.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="826.0" y="397.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q2</text>
+<circle cx="844.5" cy="363.3" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="854.5" y="353.3" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q3</text>
+<circle cx="889.2" cy="566.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="899.2" y="556.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2022Q4</text>
+<circle cx="559.3" cy="551.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="569.3" y="541.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q1</text>
+<circle cx="473.0" cy="556.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="483.0" y="546.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q2</text>
+<circle cx="514.6" cy="501.7" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="524.6" y="491.7" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q3</text>
+<circle cx="610.3" cy="580.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="620.3" y="570.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2023Q4</text>
+<circle cx="1033.1" cy="580.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1043.1" y="570.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q1</text>
+<circle cx="1070.8" cy="491.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1080.8" y="481.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q2</text>
+<circle cx="1070.8" cy="486.9" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1080.8" y="476.9" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q3</text>
+<circle cx="1117.5" cy="645.1" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1127.5" y="635.1" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2024Q4</text>
+<circle cx="1212.1" cy="630.2" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1222.1" y="620.2" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q1</text>
+<circle cx="1211.8" cy="664.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1221.8" y="654.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q2</text>
+<circle cx="1212.9" cy="580.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1222.9" y="570.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q3</text>
+<circle cx="1195.7" cy="585.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
+<text x="1205.7" y="575.8" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2025Q4</text>
+<text x="144" y="188" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600">Pearson r = -0.279 · n = 20</text>
 <text x="725.0" y="788" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17">Mean Linux C/C++ unit-test line coverage</text>
 <text transform="translate(32 435.0) rotate(-90)" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17">CVEs reported</text>
 </svg>

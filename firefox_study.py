@@ -62,22 +62,18 @@ GOLD = "#f8c555"
 
 
 def get(url: str, **kwargs) -> requests.Response:
-    last = None
     for attempt in range(6):
         try:
             r = SESSION.get(url, timeout=kwargs.pop("timeout", 120), **kwargs)
             r.raise_for_status()
             return r
-        except requests.RequestException as exc:
-            last = exc
+        except requests.RequestException:
             if attempt == 5:
                 raise
             time.sleep(1.2 * (attempt + 1))
-    raise RuntimeError(last)
 
 
 def list_coverage_objects() -> list[dict]:
-    """List Mozilla's public historical coverage archive."""
     token = None
     rows: list[dict] = []
     page = 0

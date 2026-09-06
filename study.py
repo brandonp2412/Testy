@@ -82,7 +82,6 @@ def _get(url: str, *, timeout: int = 60) -> requests.Response:
             if attempt == 4:
                 raise
             time.sleep(1.5 * (attempt + 1))
-    raise RuntimeError("unreachable")
 
 
 def parse_stat(text: str) -> Stat | None:

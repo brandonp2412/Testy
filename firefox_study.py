@@ -384,9 +384,11 @@ def aggregate(coverage: pd.DataFrame, cves: pd.DataFrame, freq: str) -> pd.DataF
 
 def lag_quarters(frame: pd.DataFrame) -> pd.DataFrame:
     out = frame.copy()
+    periods = out["period"].map(lambda value: pd.Period(str(value), freq="Q"))
+    next_periods = periods.shift(-1)
     out["next_quarter_cves"] = out["cves_reported"].shift(-1)
     out["next_quarter"] = out["period"].shift(-1)
-    out = out.dropna(subset=["next_quarter_cves"]).copy()
+    out = out[next_periods == periods.map(lambda period: period + 1)].copy()
     out["next_quarter_cves"] = out["next_quarter_cves"].astype(int)
     return out
 

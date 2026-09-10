@@ -350,9 +350,11 @@ def association(frame: pd.DataFrame, x_col: str, y_col: str) -> dict:
 
 def _lag(frame: pd.DataFrame) -> pd.DataFrame:
     result = frame.copy()
+    periods = result["period"].map(lambda value: pd.Period(str(value), freq="Q"))
+    next_periods = periods.shift(-1)
     result["next_quarter_cves"] = result["cves_reported"].shift(-1)
     result["next_quarter"] = result["period"].shift(-1)
-    result = result.dropna(subset=["next_quarter_cves"]).copy()
+    result = result[next_periods == periods.map(lambda period: period + 1)].copy()
     result["next_quarter_cves"] = result["next_quarter_cves"].astype(int)
     return result
 

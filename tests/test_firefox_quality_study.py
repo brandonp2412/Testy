@@ -19,6 +19,16 @@ class FirefoxQualityStudyTests(unittest.TestCase):
         }
         self.assertIn("all_tests_coverage_out_of_range", firefox.quality_reasons(obs))
 
+    def test_base_lag_does_not_cross_missing_quarters(self):
+        quarterly = pd.DataFrame([
+            {"period": "2024Q3", "unit_coverage_pct": 30.0, "cves_reported": 10},
+            {"period": "2025Q3", "unit_coverage_pct": 31.0, "cves_reported": 20},
+        ])
+
+        lagged = firefox.base.lag_quarters(quarterly)
+
+        self.assertTrue(lagged.empty)
+
     def test_lag_uses_calendar_next_quarter_not_next_row(self):
         quarterly = pd.DataFrame([
             {"period": "2024Q3", "unit_coverage_pct": 30.0, "cves_reported": 10},

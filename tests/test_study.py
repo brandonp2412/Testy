@@ -1,6 +1,8 @@
 import unittest
 
-from study import parse_cves_from_entry, parse_coverage_page, parse_stat
+import pandas as pd
+
+from study import _lag, parse_cves_from_entry, parse_coverage_page, parse_stat
 
 
 class ParsingTests(unittest.TestCase):
@@ -28,6 +30,16 @@ class ParsingTests(unittest.TestCase):
         self.assertEqual(rows[0]["revision"], "abc1234")
         self.assertEqual(rows[0]["line_coverage_pct"], 59.0)
         self.assertIn("direction=next", next_url)
+
+    def test_lag_does_not_treat_next_available_row_as_next_quarter(self):
+        quarterly = pd.DataFrame([
+            {"period": "2024Q3", "cves_reported": 10},
+            {"period": "2025Q3", "cves_reported": 20},
+        ])
+
+        lagged = _lag(quarterly)
+
+        self.assertTrue(lagged.empty)
 
     def test_cve_parser_filters_to_stable_desktop_and_dedupes_upstream(self):
         entry = {

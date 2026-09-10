@@ -2,7 +2,13 @@ import unittest
 
 import pandas as pd
 
-from study import _lag, parse_cves_from_entry, parse_coverage_page, parse_stat
+from study import (
+    _lag,
+    bootstrap_pearson_ci,
+    parse_cves_from_entry,
+    parse_coverage_page,
+    parse_stat,
+)
 
 
 class ParsingTests(unittest.TestCase):
@@ -40,6 +46,11 @@ class ParsingTests(unittest.TestCase):
         lagged = _lag(quarterly)
 
         self.assertTrue(lagged.empty)
+
+    def test_bootstrap_ci_handles_constant_series(self):
+        low, high = bootstrap_pearson_ci([1, 1, 1, 1], [1, 2, 3, 4], iterations=100)
+        self.assertTrue(pd.isna(low))
+        self.assertTrue(pd.isna(high))
 
     def test_cve_parser_filters_to_stable_desktop_and_dedupes_upstream(self):
         entry = {

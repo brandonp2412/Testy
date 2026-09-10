@@ -328,6 +328,8 @@ def bootstrap_pearson_ci(
         if np.std(xa[idx]) == 0 or np.std(ya[idx]) == 0:
             continue
         values.append(float(np.corrcoef(xa[idx], ya[idx])[0, 1]))
+    if not values:
+        return float("nan"), float("nan")
     return (
         float(np.quantile(values, 0.025)),
         float(np.quantile(values, 0.975)),

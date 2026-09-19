@@ -46,12 +46,13 @@ The charts are stacked at full README width so they remain readable on mobile. T
 <!-- flexify-unit-test-failure-study:start -->
 ## Flexify: when unit tests fail, was behavior actually broken?
 
-The complete [Flexify Actions history](https://github.com/brandonp2412/Flexify/actions) from **2025-08-02 through 2026-09-19** contains **632 workflow runs / 638 execution attempts**, including **258 failed attempts**. The denominator below is narrower: an attempt counts only when the Flutter unit/widget suite itself failed. Deployment, build, analysis, formatting, screenshot, Patrol/device-test, and cancelled failures are excluded.
+The complete [Flexify Actions history](https://github.com/brandonp2412/Flexify/actions) from **2025-08-02 through 2026-09-19** contains **633 workflow runs / 639 execution attempts**, including **258 failed attempts**. The denominator below is narrower: an attempt counts only when the Flutter unit/widget suite itself failed. Deployment, build, analysis, formatting, screenshot, Patrol/device-test, and cancelled failures are excluded.
 
 Method: every failed workflow attempt is inspected at the job/step level, including earlier attempts hidden behind a later GitHub re-run. An explicitly failed unit-test step counts even when GitHub has expired its detailed log; composite quality steps count only when retained job logs or check annotations contain Flutter-test failure evidence. Each confirmed test failure is then classified from the failure evidence and follow-up fix: application-code correction means behavior regression, while a test-only expectation/harness correction means stale or incorrect test assumptions.
 
 | Measure | Result |
 | --- | ---: |
+| Failed workflow attempts inspected | **258/258 (100.0%)** |
 | CI attempts where unit/widget tests actually failed | **5** |
 | Reviewed test-failure attempts | **5** |
 | Stale/incorrect test assumption or harness | **5/5 (100.0%)** |

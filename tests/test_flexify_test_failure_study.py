@@ -33,6 +33,7 @@ class FlexifyFailureStudyTests(unittest.TestCase):
                 "by_conclusion": {"failure": 2},
                 "actions_url": "https://github.com/example/actions",
             },
+            "scanned_failure_attempts": ["1:1", "2:1"],
             "unit_test_failure_events": [
                 {
                     "run_id": 1,
@@ -67,6 +68,7 @@ class FlexifyFailureStudyTests(unittest.TestCase):
 
         rendered = flexify.render_section(state)
 
+        self.assertIn("| Failed workflow attempts inspected | **2/2 (100.0%)** |", rendered)
         self.assertIn("**2/2 (100.0%)**", rendered)
         self.assertIn("**1** (0 behavior regressions)", rendered)
         self.assertIn("**0.0% per unique incident**", rendered)

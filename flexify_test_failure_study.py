@@ -380,6 +380,7 @@ def render_section(state: dict[str, Any]) -> str:
         "by_attempt_conclusion", history.get("by_conclusion", {})
     ).get("failure", 0)
     attempts_scanned = history.get("attempts_scanned", history.get("runs_scanned", 0))
+    failed_attempts_inspected = len(state.get("scanned_failure_attempts", []))
     manual_exclusions = state.get("manual_exclusions", [])
     oldest = (history.get("oldest_run_at") or "")[:10]
     newest = (history.get("newest_run_at") or "")[:10]
@@ -412,6 +413,11 @@ def render_section(state: dict[str, Any]) -> str:
         "",
         "| Measure | Result |",
         "| --- | ---: |",
+        (
+            "| Failed workflow attempts inspected | "
+            f"**{failed_attempts_inspected}/{failed_attempts} "
+            f"({percent(failed_attempts_inspected, failed_attempts)})** |"
+        ),
         f"| CI attempts where unit/widget tests actually failed | **{len(events)}** |",
         f"| Reviewed test-failure attempts | **{len(reviewed)}** |",
         f"| Stale/incorrect test assumption or harness | **{len(stale)}/{len(reviewed)} ({percent(len(stale), len(reviewed))})** |",

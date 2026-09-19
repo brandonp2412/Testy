@@ -64,6 +64,57 @@
     "unit_test_definition": "Flutter unit/widget suite (flutter test). Patrol/device integration tests, analysis, formatting, build, deployment, screenshot and cancellation failures are excluded."
   },
   "repository": "brandonp2412/Flexify",
+  "retained_composite_check_reviews": [
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "dependency_resolution",
+      "reason": "scripts/check.sh stopped during Flutter dependency version solving before analysis or flutter test.",
+      "run_id": 30975281482,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/30975281482"
+    },
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "dependency_resolution",
+      "reason": "scripts/check.sh stopped during Flutter dependency version solving before analysis or flutter test.",
+      "run_id": 30981805140,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/30981805140"
+    },
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "static_analysis",
+      "reason": "scripts/check.sh stopped in flutter analyze on undefined identifiers/functions and generated database methods before flutter test.",
+      "run_id": 33042251156,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33042251156"
+    },
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "static_analysis",
+      "reason": "scripts/check.sh stopped in flutter analyze on use_build_context_synchronously before flutter test.",
+      "run_id": 33043195456,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33043195456"
+    },
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "static_analysis",
+      "reason": "scripts/check.sh stopped in flutter analyze on use_build_context_synchronously before flutter test.",
+      "run_id": 33045591907,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33045591907"
+    },
+    {
+      "classification": "unit_test_failure",
+      "failure_stage": "flutter_test",
+      "reason": "Retained log reports 1576 tests passed and 1 failed; this event is classified in unit_test_failure_events.",
+      "run_id": 33935285113,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33935285113"
+    },
+    {
+      "classification": "non_test_failure",
+      "failure_stage": "static_analysis",
+      "reason": "scripts/check.sh stopped in flutter analyze on a duplicate named argument before flutter test; earlier Patrol retry self-check output recovered successfully and is not the Flutter unit/widget suite.",
+      "run_id": 34473849034,
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/34473849034"
+    }
+  ],
   "scanned_failure_attempts": [
     "16867398872:1",
     "16867432541:1",
@@ -1159,5 +1210,5 @@
       "workflow": "Build and Release"
     }
   ],
-  "updated_at": "2026-09-19T08:38:01.320692+00:00"
+  "updated_at": "2026-09-19T09:12:45.534107+00:00"
 }

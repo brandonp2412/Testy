@@ -382,6 +382,18 @@ def render_section(state: dict[str, Any]) -> str:
     attempts_scanned = history.get("attempts_scanned", history.get("runs_scanned", 0))
     failed_attempts_inspected = len(state.get("scanned_failure_attempts", []))
     manual_exclusions = state.get("manual_exclusions", [])
+    composite_reviews = state.get("retained_composite_check_reviews", [])
+    composite_test_failures = [
+        item for item in composite_reviews
+        if item.get("classification") == "unit_test_failure"
+    ]
+    composite_non_test = [
+        item for item in composite_reviews
+        if item.get("classification") == "non_test_failure"
+    ]
+    composite_non_test_causes = Counter(
+        item.get("failure_stage", "other") for item in composite_non_test
+    )
     oldest = (history.get("oldest_run_at") or "")[:10]
     newest = (history.get("newest_run_at") or "")[:10]
 
@@ -445,11 +457,31 @@ def render_section(state: dict[str, Any]) -> str:
             else "No ambiguous historical composite failures remain."
         ),
         "",
+    ]
+
+    if composite_reviews:
+        causes = ", ".join(
+            f"{count} {stage.replace('_', ' ')}"
+            for stage, count in sorted(composite_non_test_causes.items())
+        )
+        lines.extend([
+            (
+                "Completeness cross-check: **"
+                f"{len(composite_reviews)} retained composite `Check` failures** were manually "
+                f"reviewed. **{len(composite_test_failures)}** contained a Flutter unit/widget-test "
+                "failure and is already counted above; the other **"
+                f"{len(composite_non_test)}** stopped before that suite "
+                f"({causes}), so they are not silently dropped test failures."
+            ),
+            "",
+        ])
+
+    lines.extend([
         "### Reviewed failures",
         "",
         "| Date | Actions run | Failed assertions | Classification | Evidence |",
         "| --- | --- | ---: | --- | --- |",
-    ]
+    ])
 
     for event in reviewed:
         review = event["review"]

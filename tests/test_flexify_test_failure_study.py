@@ -34,6 +34,18 @@ class FlexifyFailureStudyTests(unittest.TestCase):
                 "actions_url": "https://github.com/example/actions",
             },
             "scanned_failure_attempts": ["1:1", "2:1"],
+            "retained_composite_check_reviews": [
+                {
+                    "run_id": 1,
+                    "classification": "unit_test_failure",
+                    "failure_stage": "flutter_test",
+                },
+                {
+                    "run_id": 3,
+                    "classification": "non_test_failure",
+                    "failure_stage": "static_analysis",
+                },
+            ],
             "unit_test_failure_events": [
                 {
                     "run_id": 1,
@@ -72,6 +84,8 @@ class FlexifyFailureStudyTests(unittest.TestCase):
         self.assertIn("**2/2 (100.0%)**", rendered)
         self.assertIn("**1** (0 behavior regressions)", rendered)
         self.assertIn("**0.0% per unique incident**", rendered)
+        self.assertIn("**2 retained composite `Check` failures**", rendered)
+        self.assertIn("1 static analysis", rendered)
 
     def test_direct_test_step_is_failure_even_without_retained_log(self):
         run_data = {

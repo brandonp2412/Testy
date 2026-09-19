@@ -66,6 +66,8 @@ For this sample, the observed behavior-regression rate is **0.0% per failed CI t
 
 GitHub no longer retains enough detail to prove whether **2 older composite-job failures** reached the unit-test stage. They remain explicitly recorded in the audit state and are excluded from both the test-failure numerator and classification denominator rather than guessed.
 
+Completeness cross-check: **7 retained composite `Check` failures** were manually reviewed. **1** contained a Flutter unit/widget-test failure and is already counted above; the other **6** stopped before that suite (2 dependency resolution, 4 static analysis), so they are not silently dropped test failures.
+
 ### Reviewed failures
 
 | Date | Actions run | Failed assertions | Classification | Evidence |

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -50,6 +50,7 @@ def load_state() -> dict[str, Any]:
             "repository": REPO,
             "history": {},
             "scanned_run_ids": [],
+            "scanned_failure_attempts": [],
             "unit_test_failure_events": [],
             "manual_exclusions": [],
         }
@@ -107,10 +108,16 @@ def parse_failure(text: str) -> tuple[list[dict[str, str]], int | None]:
     return found, count
 
 
+def failure_attempt_key(run: dict[str, Any]) -> str:
+    """Stable checkpoint key that changes when GitHub re-runs the same run."""
+    return f"{int(run['id'])}:{int(run.get('run_attempt') or 1)}"
+
+
 def discover(run: dict[str, Any], jobs: list[dict[str, Any]]) -> dict[str, Any] | None:
     run_id = int(run["id"])
     failed_tests: list[dict[str, str]] = []
     failed_count: int | None = None
+    definite_test_failure = False
     evidence: list[str] = []
 
     for job in jobs:
@@ -128,24 +135,44 @@ def discover(run: dict[str, Any], jobs: list[dict[str, Any]]) -> dict[str, Any] 
         composite = bool(lower & COMPOSITE_STEPS) and not patrol
 
         if direct or composite:
+            definite_test_failure = definite_test_failure or direct
             log = job_log(run_id, int(job["id"]))
             tests, count = parse_failure(log)
-            if direct or count:
+            sources: list[str] = []
+            if log:
+                sources.append("retained job log " + str(job["id"]))
+
+            annotation_text = "\n".join(
+                item.get("message", "") for item in annotations(int(job["id"]))
+            )
+            annotation_tests, annotation_count = parse_failure(annotation_text)
+            if annotation_count is not None:
+                tests.extend(annotation_tests)
+                count = max(count or 0, annotation_count)
+                sources.append("retained check annotation " + str(job["id"]))
+
+            if count is not None:
+                definite_test_failure = True
                 failed_tests.extend(tests)
-                if count is not None:
-                    failed_count = max(failed_count or 0, count)
-                evidence.append("retained job log " + str(job["id"]))
+                failed_count = max(failed_count or 0, count)
+                evidence.extend(sources)
+                continue
+            if direct:
+                evidence.extend(sources or ["failed test step metadata " + str(job["id"])])
                 continue
 
         if not job.get("steps") and name == "version-and-prepare":
-            text = "\n".join(item.get("message", "") for item in annotations(int(job["id"])))
+            text = "\n".join(
+                item.get("message", "") for item in annotations(int(job["id"]))
+            )
             tests, count = parse_failure(text)
             if count:
+                definite_test_failure = True
                 failed_tests.extend(tests)
                 failed_count = max(failed_count or 0, count)
                 evidence.append("retained check annotation " + str(job["id"]))
 
-    if failed_count is None:
+    if not definite_test_failure:
         return None
 
     unique: list[dict[str, str]] = []
@@ -199,32 +226,82 @@ def sync(rescan: bool = False) -> None:
         int(event["run_id"]): event
         for event in state.get("unit_test_failure_events", [])
     }
-    scanned = set() if rescan else set(state.get("scanned_run_ids", []))
+
+    old_scanned_ids = set(state.get("scanned_run_ids", []))
+    scanned_attempts = set(state.get("scanned_failure_attempts", []))
+    if not scanned_attempts and old_scanned_ids and not rescan:
+        scanned_attempts = {
+            failure_attempt_key(run)
+            for run in runs
+            if run.get("conclusion") == "failure"
+            and int(run["id"]) in old_scanned_ids
+        }
+    if rescan:
+        scanned_attempts = set()
+
     targets = [
         run for run in runs
-        if run.get("conclusion") == "failure" and int(run["id"]) not in scanned
+        if run.get("conclusion") == "failure"
+        and failure_attempt_key(run) not in scanned_attempts
     ]
 
-    def inspect(run: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
-        return int(run["id"]), discover(run, jobs_for(int(run["id"])))
+    state["schema_version"] = max(int(state.get("schema_version", 1)), 2)
+    methodology = state.setdefault("methodology", {})
+    methodology.update({
+        "scope": "Complete GitHub Actions history currently exposed by the repository.",
+        "unit_test_definition": (
+            "Flutter unit/widget suite (flutter test). Patrol/device integration tests, "
+            "analysis, formatting, build, deployment, screenshot and cancellation failures "
+            "are excluded."
+        ),
+        "classification_rule": (
+            "App behavior broken only when the failing assertion exposed a behavioral "
+            "regression that required application-code correction. A failure fixed solely "
+            "by updating stale test expectations or harness setup is test_assumption_or_harness."
+        ),
+        "detection_rule": (
+            "Every failed workflow run is inspected. Explicit failed unit-test step metadata "
+            "counts even if detailed logs have expired; composite quality steps require retained "
+            "flutter-test evidence from job logs or check annotations."
+        ),
+        "checkpoint_rule": (
+            "Each inspected failed run attempt is checkpointed immediately. GitHub re-runs are "
+            "tracked by run ID plus run_attempt so a later attempt is inspected again."
+        ),
+    })
+    state["history"] = summarize_history(runs)
+    state["scanned_run_ids"] = sorted(
+        int(run["id"]) for run in runs if run.get("status") == "completed"
+    )
+    state["scanned_failure_attempts"] = sorted(scanned_attempts)
+
+    def checkpoint() -> None:
+        state["unit_test_failure_events"] = sorted(
+            old.values(), key=lambda event: event["created_at"]
+        )
+        state["scanned_failure_attempts"] = sorted(scanned_attempts)
+        state["updated_at"] = datetime.now(timezone.utc).isoformat()
+        save_state(state)
+
+    def inspect(run: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any] | None]:
+        return run, discover(run, jobs_for(int(run["id"])))
 
     if targets:
         with ThreadPoolExecutor(max_workers=8) as pool:
-            for run_id, event in pool.map(inspect, targets):
+            futures = {pool.submit(inspect, run): run for run in targets}
+            for future in as_completed(futures):
+                run, event = future.result()
+                run_id = int(run["id"])
                 if event:
                     if run_id in old:
                         event["review"] = old[run_id].get("review", event["review"])
                     old[run_id] = event
+                scanned_attempts.add(failure_attempt_key(run))
+                checkpoint()
 
-    state["history"] = summarize_history(runs)
-    state["scanned_run_ids"] = sorted(int(run["id"]) for run in runs)
-    state["unit_test_failure_events"] = sorted(
-        old.values(), key=lambda event: event["created_at"]
-    )
-    state["updated_at"] = datetime.now(timezone.utc).isoformat()
-    save_state(state)
+    checkpoint()
     print(
-        f"{len(runs)} runs known; {len(targets)} new failed runs inspected; "
+        f"{len(runs)} runs known; {len(targets)} failed run attempts inspected; "
         f"{len(old)} unit/widget-test failure runs recorded"
     )
 
@@ -270,6 +347,16 @@ def render_section(state: dict[str, Any]) -> str:
             "a run counts only when the Flutter unit/widget suite itself failed. "
             "Deployment, build, analysis, formatting, screenshot, Patrol/device-test, "
             "and cancelled failures are excluded."
+        ),
+        "",
+        (
+            "Method: every failed workflow run is inspected at the job/step level. "
+            "An explicitly failed unit-test step counts even when GitHub has expired its "
+            "detailed log; composite quality steps count only when retained job logs or "
+            "check annotations contain Flutter-test failure evidence. Each confirmed test "
+            "failure is then classified from the failure evidence and follow-up fix: "
+            "application-code correction means behavior regression, while a test-only "
+            "expectation/harness correction means stale or incorrect test assumptions."
         ),
         "",
         "| Measure | Result |",

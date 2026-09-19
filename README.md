@@ -48,6 +48,8 @@ The charts are stacked at full README width so they remain readable on mobile. T
 
 The complete [Flexify Actions history](https://github.com/brandonp2412/Flexify/actions) from **2025-08-02 through 2026-09-19** contains **631 workflow runs**, including **254 failed runs**. The denominator below is narrower: a run counts only when the Flutter unit/widget suite itself failed. Deployment, build, analysis, formatting, screenshot, Patrol/device-test, and cancelled failures are excluded.
 
+Method: every failed workflow run is inspected at the job/step level. An explicitly failed unit-test step counts even when GitHub has expired its detailed log; composite quality steps count only when retained job logs or check annotations contain Flutter-test failure evidence. Each confirmed test failure is then classified from the failure evidence and follow-up fix: application-code correction means behavior regression, while a test-only expectation/harness correction means stale or incorrect test assumptions.
+
 | Measure | Result |
 | --- | ---: |
 | CI runs where unit/widget tests actually failed | **5** |

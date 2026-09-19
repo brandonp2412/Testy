@@ -71,6 +71,43 @@ class FlexifyFailureStudyTests(unittest.TestCase):
         self.assertIn("**1** (0 behavior regressions)", rendered)
         self.assertIn("**0.0% per unique incident**", rendered)
 
+    def test_direct_test_step_is_failure_even_without_retained_log(self):
+        run_data = {
+            "id": 123,
+            "created_at": "2025-01-01T00:00:00Z",
+            "name": "Build",
+            "display_title": "change",
+            "head_sha": "abc",
+            "run_attempt": 1,
+        }
+        jobs = [{
+            "id": 456,
+            "name": "quality",
+            "conclusion": "failure",
+            "steps": [{"name": "Run tests", "conclusion": "failure"}],
+        }]
+
+        original_log = flexify.job_log
+        original_annotations = flexify.annotations
+        try:
+            flexify.job_log = lambda run_id, job_id: ""
+            flexify.annotations = lambda job_id: []
+            event = flexify.discover(run_data, jobs)
+        finally:
+            flexify.job_log = original_log
+            flexify.annotations = original_annotations
+
+        self.assertIsNotNone(event)
+        self.assertIsNone(event["failed_assertion_count"])
+        self.assertIn("failed test step metadata 456", event["source_evidence"])
+
+    def test_failure_attempt_key_changes_for_rerun(self):
+        self.assertEqual(flexify.failure_attempt_key({"id": 9}), "9:1")
+        self.assertEqual(
+            flexify.failure_attempt_key({"id": 9, "run_attempt": 3}),
+            "9:3",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

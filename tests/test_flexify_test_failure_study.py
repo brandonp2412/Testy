@@ -108,6 +108,31 @@ class FlexifyFailureStudyTests(unittest.TestCase):
             "9:3",
         )
 
+        self.assertEqual(
+            flexify.event_attempt_key({"run_id": 9, "run_attempt": 3}),
+            "9:3",
+        )
+
+    def test_history_counts_hidden_rerun_attempts(self):
+        runs = [
+            {
+                "id": 1,
+                "created_at": "2026-01-01T00:00:00Z",
+                "name": "Build",
+                "conclusion": "success",
+            }
+        ]
+        attempts = [
+            {**runs[0], "run_attempt": 1, "conclusion": "failure"},
+            {**runs[0], "run_attempt": 2, "conclusion": "success"},
+        ]
+
+        history = flexify.summarize_history(runs, attempts)
+
+        self.assertEqual(history["runs_scanned"], 1)
+        self.assertEqual(history["attempts_scanned"], 2)
+        self.assertEqual(history["by_attempt_conclusion"]["failure"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

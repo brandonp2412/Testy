@@ -1,16 +1,25 @@
 {
   "history": {
     "actions_url": "https://github.com/brandonp2412/Flexify/actions",
+    "attempts_scanned": 638,
+    "by_attempt_conclusion": {
+      "cancelled": 90,
+      "failure": 258,
+      "skipped": 11,
+      "success": 278,
+      "unknown": 1
+    },
     "by_conclusion": {
       "cancelled": 89,
       "failure": 254,
       "skipped": 11,
-      "success": 277
+      "success": 277,
+      "unknown": 1
     },
     "by_workflow": {
       ".github/workflows/main.yml": 1,
       "Build and Deploy": 70,
-      "Build and Release": 173,
+      "Build and Release": 174,
       "Close stale feature requests": 79,
       "Deploy privacy policy": 1,
       "Deploy to Google Play": 207,
@@ -32,9 +41,9 @@
       "Sync foundation lockfile": 1,
       "Waydroid Screenshots (experimental)": 10
     },
-    "newest_run_at": "2026-09-19T03:54:00Z",
+    "newest_run_at": "2026-09-19T07:18:00Z",
     "oldest_run_at": "2025-08-02T02:25:47Z",
-    "runs_scanned": 631
+    "runs_scanned": 632
   },
   "manual_exclusions": [
     {
@@ -52,8 +61,8 @@
   "methodology": {
     "checkpoint_rule": "Each inspected failed run attempt is checkpointed immediately. GitHub re-runs are tracked by run ID plus run_attempt so a later attempt is inspected again.",
     "classification_rule": "App behavior broken only when the failing assertion exposed a behavioral regression that required application-code correction. A failure fixed solely by updating stale test expectations or harness setup is test_assumption_or_harness.",
-    "detection_rule": "Every failed workflow run is inspected. Explicit failed unit-test step metadata counts even if detailed logs have expired; composite quality steps require retained flutter-test evidence from job logs or check annotations.",
-    "scope": "Complete GitHub Actions history currently exposed by the repository.",
+    "detection_rule": "Every failed workflow attempt is inspected. Explicit failed unit-test step metadata counts even if detailed logs have expired; composite quality steps require retained flutter-test evidence from job logs or check annotations.",
+    "scope": "Complete GitHub Actions history currently exposed by the repository, including earlier attempts of re-run workflow runs.",
     "unit_test_definition": "Flutter unit/widget suite (flutter test). Patrol/device integration tests, analysis, formatting, build, deployment, screenshot and cancellation failures are excluded."
   },
   "repository": "brandonp2412/Flexify",
@@ -67,6 +76,7 @@
     "16981042010:1",
     "17015433492:1",
     "17057342591:1",
+    "17112915289:1",
     "17114851697:1",
     "17169651438:1",
     "17196958834:1",
@@ -274,6 +284,7 @@
     "32221826725:1",
     "32436798395:1",
     "32568164645:1",
+    "32607565079:1",
     "32609433829:1",
     "32610816842:1",
     "32699751509:1",
@@ -297,11 +308,13 @@
     "33704724866:1",
     "33832765351:1",
     "33832899001:1",
+    "33833071193:1",
     "33833071193:2",
     "33935285113:1",
     "34173422100:1",
     "34473849034:1",
     "34657048626:1",
+    "34660550294:1",
     "34677801396:1",
     "34825490315:1",
     "34832734283:1",
@@ -946,7 +959,7 @@
     35404600568,
     35419843134
   ],
-  "schema_version": 2,
+  "schema_version": 3,
   "unit_test_failure_events": [
     {
       "created_at": "2025-08-13T10:03:30Z",
@@ -962,8 +975,9 @@
         "incident_key": "plans-list-required-scroll-controller",
         "reason": "The retained check annotation says 881 tests passed and 1 failed. The follow-up fix changed only test/plan_list_test.dart, adding the ScrollController newly required by PlansList; application behavior was unchanged."
       },
+      "run_attempt": 1,
       "run_id": 16934023043,
-      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/16934023043",
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/16934023043/attempts/1",
       "source_evidence": [
         "retained check annotation 47986189672"
       ],
@@ -1009,8 +1023,9 @@
         "incident_key": "context-specific-search-labels",
         "reason": "All six assertions still expected the old generic Search... label. The fix changed only tests to the current Search history..., Search graphs..., and Search plans... labels."
       },
+      "run_attempt": 1,
       "run_id": 29629498590,
-      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/29629498590",
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/29629498590/attempts/1",
       "source_evidence": [
         "retained job log 88040288763",
         "retained check annotation 88040288763"
@@ -1057,8 +1072,9 @@
         "incident_key": "context-specific-search-labels",
         "reason": "Same root cause as run 29629498590: six stale Search... text expectations. The eventual fix touched only the test expectations."
       },
+      "run_attempt": 1,
       "run_id": 29630985356,
-      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/29630985356",
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/29630985356/attempts/1",
       "source_evidence": [
         "retained job log 88044341483",
         "retained check annotation 88044341483"
@@ -1103,8 +1119,9 @@
           }
         ]
       },
+      "run_attempt": 1,
       "run_id": 33045818492,
-      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33045818492",
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33045818492/attempts/1",
       "source_evidence": [
         "retained job log 98429440287",
         "retained check annotation 98429440287"
@@ -1131,8 +1148,9 @@
         "incident_key": "graph-history-empty-state-copy",
         "reason": "The assertion expected old empty-state copy No data yet for Graph history test. The fix changed only that test expectation to the existing No history yet for Graph history test UI copy."
       },
+      "run_attempt": 1,
       "run_id": 33935285113,
-      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33935285113",
+      "run_url": "https://github.com/brandonp2412/Flexify/actions/runs/33935285113/attempts/1",
       "source_evidence": [
         "retained job log 101221909389",
         "retained check annotation 101221909389"
@@ -1141,5 +1159,5 @@
       "workflow": "Build and Release"
     }
   ],
-  "updated_at": "2026-09-19T06:48:35.613283+00:00"
+  "updated_at": "2026-09-19T07:23:33.320471+00:00"
 }

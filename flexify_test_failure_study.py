@@ -69,8 +69,27 @@ def list_runs() -> list[dict[str, Any]]:
     return [run for page in pages for run in page["workflow_runs"]]
 
 
-def jobs_for(run_id: int) -> list[dict[str, Any]]:
-    return gh_json([f"repos/{REPO}/actions/runs/{run_id}/jobs?per_page=100"])["jobs"]
+def list_run_attempts(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Expand workflow runs so earlier re-run attempts are audited too."""
+    attempts: list[dict[str, Any]] = []
+    for run in runs:
+        latest_attempt = int(run.get("run_attempt") or 1)
+        for attempt in range(1, latest_attempt):
+            attempts.append(
+                gh_json([f"repos/{REPO}/actions/runs/{run['id']}/attempts/{attempt}"])
+            )
+        attempts.append(run)
+    return attempts
+
+
+def jobs_for(run_id: int, attempt: int | None = None) -> list[dict[str, Any]]:
+    if attempt is None:
+        endpoint = f"repos/{REPO}/actions/runs/{run_id}/jobs?per_page=100"
+    else:
+        endpoint = (
+            f"repos/{REPO}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100"
+        )
+    return gh_json([endpoint])["jobs"]
 
 
 def job_log(run_id: int, job_id: int) -> str:
@@ -111,6 +130,10 @@ def parse_failure(text: str) -> tuple[list[dict[str, str]], int | None]:
 def failure_attempt_key(run: dict[str, Any]) -> str:
     """Stable checkpoint key that changes when GitHub re-runs the same run."""
     return f"{int(run['id'])}:{int(run.get('run_attempt') or 1)}"
+
+
+def event_attempt_key(event: dict[str, Any]) -> str:
+    return f"{int(event['run_id'])}:{int(event.get('run_attempt') or 1)}"
 
 
 def discover(run: dict[str, Any], jobs: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -185,7 +208,11 @@ def discover(run: dict[str, Any], jobs: list[dict[str, Any]]) -> dict[str, Any] 
 
     return {
         "run_id": run_id,
-        "run_url": f"https://github.com/{REPO}/actions/runs/{run_id}",
+        "run_attempt": int(run.get("run_attempt") or 1),
+        "run_url": (
+            f"https://github.com/{REPO}/actions/runs/{run_id}/attempts/"
+            f"{int(run.get('run_attempt') or 1)}"
+        ),
         "created_at": run["created_at"],
         "workflow": run["name"],
         "title": run["display_title"],
@@ -205,14 +232,22 @@ def discover(run: dict[str, Any], jobs: list[dict[str, Any]]) -> dict[str, Any] 
     }
 
 
-def summarize_history(runs: list[dict[str, Any]]) -> dict[str, Any]:
+def summarize_history(
+    runs: list[dict[str, Any]],
+    attempts: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    attempts = attempts or runs
     ordered = sorted(runs, key=lambda run: run["created_at"])
     return {
         "runs_scanned": len(runs),
+        "attempts_scanned": len(attempts),
         "oldest_run_at": ordered[0]["created_at"] if ordered else None,
         "newest_run_at": ordered[-1]["created_at"] if ordered else None,
         "by_conclusion": dict(sorted(Counter(
             run.get("conclusion") or "unknown" for run in runs
+        ).items())),
+        "by_attempt_conclusion": dict(sorted(Counter(
+            run.get("conclusion") or "unknown" for run in attempts
         ).items())),
         "by_workflow": dict(sorted(Counter(run["name"] for run in runs).items())),
         "actions_url": f"https://github.com/{REPO}/actions",
@@ -222,14 +257,17 @@ def summarize_history(runs: list[dict[str, Any]]) -> dict[str, Any]:
 def sync(rescan: bool = False) -> None:
     state = load_state()
     runs = list_runs()
+    attempts = list_run_attempts(runs)
     old = {
-        int(event["run_id"]): event
+        event_attempt_key(event): event
         for event in state.get("unit_test_failure_events", [])
     }
 
     old_scanned_ids = set(state.get("scanned_run_ids", []))
     scanned_attempts = set(state.get("scanned_failure_attempts", []))
     if not scanned_attempts and old_scanned_ids and not rescan:
+        # Legacy state only knew latest run IDs. Do not assume earlier re-run
+        # attempts were inspected; leave them eligible for discovery.
         scanned_attempts = {
             failure_attempt_key(run)
             for run in runs
@@ -240,15 +278,18 @@ def sync(rescan: bool = False) -> None:
         scanned_attempts = set()
 
     targets = [
-        run for run in runs
+        run for run in attempts
         if run.get("conclusion") == "failure"
         and failure_attempt_key(run) not in scanned_attempts
     ]
 
-    state["schema_version"] = max(int(state.get("schema_version", 1)), 2)
+    state["schema_version"] = max(int(state.get("schema_version", 1)), 3)
     methodology = state.setdefault("methodology", {})
     methodology.update({
-        "scope": "Complete GitHub Actions history currently exposed by the repository.",
+        "scope": (
+            "Complete GitHub Actions history currently exposed by the repository, "
+            "including earlier attempts of re-run workflow runs."
+        ),
         "unit_test_definition": (
             "Flutter unit/widget suite (flutter test). Patrol/device integration tests, "
             "analysis, formatting, build, deployment, screenshot and cancellation failures "
@@ -260,7 +301,7 @@ def sync(rescan: bool = False) -> None:
             "by updating stale test expectations or harness setup is test_assumption_or_harness."
         ),
         "detection_rule": (
-            "Every failed workflow run is inspected. Explicit failed unit-test step metadata "
+            "Every failed workflow attempt is inspected. Explicit failed unit-test step metadata "
             "counts even if detailed logs have expired; composite quality steps require retained "
             "flutter-test evidence from job logs or check annotations."
         ),
@@ -269,7 +310,7 @@ def sync(rescan: bool = False) -> None:
             "tracked by run ID plus run_attempt so a later attempt is inspected again."
         ),
     })
-    state["history"] = summarize_history(runs)
+    state["history"] = summarize_history(runs, attempts)
     state["scanned_run_ids"] = sorted(
         int(run["id"]) for run in runs if run.get("status") == "completed"
     )
@@ -284,24 +325,28 @@ def sync(rescan: bool = False) -> None:
         save_state(state)
 
     def inspect(run: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any] | None]:
-        return run, discover(run, jobs_for(int(run["id"])))
+        return run, discover(
+            run,
+            jobs_for(int(run["id"]), int(run.get("run_attempt") or 1)),
+        )
 
     if targets:
         with ThreadPoolExecutor(max_workers=8) as pool:
             futures = {pool.submit(inspect, run): run for run in targets}
             for future in as_completed(futures):
                 run, event = future.result()
-                run_id = int(run["id"])
+                key = failure_attempt_key(run)
                 if event:
-                    if run_id in old:
-                        event["review"] = old[run_id].get("review", event["review"])
-                    old[run_id] = event
+                    if key in old:
+                        event["review"] = old[key].get("review", event["review"])
+                    old[key] = event
                 scanned_attempts.add(failure_attempt_key(run))
                 checkpoint()
 
     checkpoint()
     print(
-        f"{len(runs)} runs known; {len(targets)} failed run attempts inspected; "
+        f"{len(runs)} runs / {len(attempts)} attempts known; "
+        f"{len(targets)} failed run attempts inspected; "
         f"{len(old)} unit/widget-test failure runs recorded"
     )
 
@@ -331,7 +376,11 @@ def render_section(state: dict[str, Any]) -> str:
         if event["review"].get("incident_key")
     }
     history = state.get("history", {})
-    failed_runs = history.get("by_conclusion", {}).get("failure", 0)
+    failed_attempts = history.get(
+        "by_attempt_conclusion", history.get("by_conclusion", {})
+    ).get("failure", 0)
+    attempts_scanned = history.get("attempts_scanned", history.get("runs_scanned", 0))
+    manual_exclusions = state.get("manual_exclusions", [])
     oldest = (history.get("oldest_run_at") or "")[:10]
     newest = (history.get("newest_run_at") or "")[:10]
 
@@ -342,15 +391,17 @@ def render_section(state: dict[str, Any]) -> str:
         (
             f"The complete [Flexify Actions history]({history.get('actions_url')}) "
             f"from **{oldest} through {newest}** contains "
-            f"**{history.get('runs_scanned', 0)} workflow runs**, including "
-            f"**{failed_runs} failed runs**. The denominator below is narrower: "
-            "a run counts only when the Flutter unit/widget suite itself failed. "
+            f"**{history.get('runs_scanned', 0)} workflow runs / "
+            f"{attempts_scanned} execution attempts**, including "
+            f"**{failed_attempts} failed attempts**. The denominator below is narrower: "
+            "an attempt counts only when the Flutter unit/widget suite itself failed. "
             "Deployment, build, analysis, formatting, screenshot, Patrol/device-test, "
             "and cancelled failures are excluded."
         ),
         "",
         (
-            "Method: every failed workflow run is inspected at the job/step level. "
+            "Method: every failed workflow attempt is inspected at the job/step level, "
+            "including earlier attempts hidden behind a later GitHub re-run. "
             "An explicitly failed unit-test step counts even when GitHub has expired its "
             "detailed log; composite quality steps count only when retained job logs or "
             "check annotations contain Flutter-test failure evidence. Each confirmed test "
@@ -361,21 +412,31 @@ def render_section(state: dict[str, Any]) -> str:
         "",
         "| Measure | Result |",
         "| --- | ---: |",
-        f"| CI runs where unit/widget tests actually failed | **{len(events)}** |",
-        f"| Reviewed test-failure runs | **{len(reviewed)}** |",
+        f"| CI attempts where unit/widget tests actually failed | **{len(events)}** |",
+        f"| Reviewed test-failure attempts | **{len(reviewed)}** |",
         f"| Stale/incorrect test assumption or harness | **{len(stale)}/{len(reviewed)} ({percent(len(stale), len(reviewed))})** |",
         f"| App behavior actually broken | **{len(broken)}/{len(reviewed)} ({percent(len(broken), len(reviewed))})** |",
         f"| Failed assertions classified | **{assertions}** ({broken_assertions} behavior-regression assertions) |",
         f"| Unique root-cause incidents | **{len(incidents)}** ({len(broken_incidents)} behavior regressions) |",
         f"| Awaiting manual review | **{len(events) - len(reviewed)}** |",
+        f"| Ambiguous old composite failures excluded | **{len(manual_exclusions)}** |",
         "",
         (
             "For this sample, the observed behavior-regression rate is "
-            f"**{percent(len(broken), len(reviewed))} per failed CI test run**, "
+            f"**{percent(len(broken), len(reviewed))} per failed CI test attempt**, "
             f"**{percent(broken_assertions, assertions)} per failed assertion**, and "
             f"**{percent(len(broken_incidents), len(incidents))} per unique incident**. "
-            "The sample is small and repeated CI runs from one root cause are not independent, "
+            "The sample is small and repeated CI attempts from one root cause are not independent, "
             "so all three denominators are reported."
+        ),
+        "",
+        (
+            f"GitHub no longer retains enough detail to prove whether "
+            f"**{len(manual_exclusions)} older composite-job failures** reached the unit-test "
+            "stage. They remain explicitly recorded in the audit state and are excluded from "
+            "both the test-failure numerator and classification denominator rather than guessed."
+            if manual_exclusions
+            else "No ambiguous historical composite failures remain."
         ),
         "",
         "### Reviewed failures",
@@ -412,7 +473,7 @@ def render_section(state: dict[str, Any]) -> str:
             "[data/flexify/unit_test_failure_audit.json]"
             "(data/flexify/unit_test_failure_audit.json). "
             "Run python flexify_test_failure_study.py sync to inspect only newly seen "
-            "failed Actions runs while preserving existing manual reviews. "
+            "failed Actions attempts while preserving existing manual reviews. "
             "Use the rescan flag after changing the detector, then render the README again."
         ),
         END,

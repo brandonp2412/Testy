@@ -46,33 +46,36 @@ The charts are stacked at full README width so they remain readable on mobile. T
 <!-- flexify-unit-test-failure-study:start -->
 ## Flexify: when unit tests fail, was behavior actually broken?
 
-The complete [Flexify Actions history](https://github.com/brandonp2412/Flexify/actions) from **2025-08-02 through 2026-09-19** contains **631 workflow runs**, including **254 failed runs**. The denominator below is narrower: a run counts only when the Flutter unit/widget suite itself failed. Deployment, build, analysis, formatting, screenshot, Patrol/device-test, and cancelled failures are excluded.
+The complete [Flexify Actions history](https://github.com/brandonp2412/Flexify/actions) from **2025-08-02 through 2026-09-19** contains **632 workflow runs / 638 execution attempts**, including **258 failed attempts**. The denominator below is narrower: an attempt counts only when the Flutter unit/widget suite itself failed. Deployment, build, analysis, formatting, screenshot, Patrol/device-test, and cancelled failures are excluded.
 
-Method: every failed workflow run is inspected at the job/step level. An explicitly failed unit-test step counts even when GitHub has expired its detailed log; composite quality steps count only when retained job logs or check annotations contain Flutter-test failure evidence. Each confirmed test failure is then classified from the failure evidence and follow-up fix: application-code correction means behavior regression, while a test-only expectation/harness correction means stale or incorrect test assumptions.
+Method: every failed workflow attempt is inspected at the job/step level, including earlier attempts hidden behind a later GitHub re-run. An explicitly failed unit-test step counts even when GitHub has expired its detailed log; composite quality steps count only when retained job logs or check annotations contain Flutter-test failure evidence. Each confirmed test failure is then classified from the failure evidence and follow-up fix: application-code correction means behavior regression, while a test-only expectation/harness correction means stale or incorrect test assumptions.
 
 | Measure | Result |
 | --- | ---: |
-| CI runs where unit/widget tests actually failed | **5** |
-| Reviewed test-failure runs | **5** |
+| CI attempts where unit/widget tests actually failed | **5** |
+| Reviewed test-failure attempts | **5** |
 | Stale/incorrect test assumption or harness | **5/5 (100.0%)** |
 | App behavior actually broken | **0/5 (0.0%)** |
 | Failed assertions classified | **18** (0 behavior-regression assertions) |
 | Unique root-cause incidents | **4** (0 behavior regressions) |
 | Awaiting manual review | **0** |
+| Ambiguous old composite failures excluded | **2** |
 
-For this sample, the observed behavior-regression rate is **0.0% per failed CI test run**, **0.0% per failed assertion**, and **0.0% per unique incident**. The sample is small and repeated CI runs from one root cause are not independent, so all three denominators are reported.
+For this sample, the observed behavior-regression rate is **0.0% per failed CI test attempt**, **0.0% per failed assertion**, and **0.0% per unique incident**. The sample is small and repeated CI attempts from one root cause are not independent, so all three denominators are reported.
+
+GitHub no longer retains enough detail to prove whether **2 older composite-job failures** reached the unit-test stage. They remain explicitly recorded in the audit state and are excluded from both the test-failure numerator and classification denominator rather than guessed.
 
 ### Reviewed failures
 
 | Date | Actions run | Failed assertions | Classification | Evidence |
 | --- | --- | ---: | --- | --- |
-| 2025-08-13 | [16934023043](https://github.com/brandonp2412/Flexify/actions/runs/16934023043) | 1 | Test assumption/harness | The retained check annotation says 881 tests passed and 1 failed. The follow-up fix changed only test/plan_list_test.dart, adding the ScrollController newly required by PlansList; application behavior was unchanged. ([fix 90ca6a40d4](https://github.com/brandonp2412/Flexify/commit/90ca6a40d4ac4d1edaa57ae1cd0a6c1f649c40a2)) |
-| 2026-07-18 | [29629498590](https://github.com/brandonp2412/Flexify/actions/runs/29629498590) | 6 | Test assumption/harness | All six assertions still expected the old generic Search... label. The fix changed only tests to the current Search history..., Search graphs..., and Search plans... labels. ([fix 947e253b8e](https://github.com/brandonp2412/Flexify/commit/947e253b8e82cea4c3343c8daded4723b66ed7ef)) |
-| 2026-07-18 | [29630985356](https://github.com/brandonp2412/Flexify/actions/runs/29630985356) | 6 | Test assumption/harness | Same root cause as run 29629498590: six stale Search... text expectations. The eventual fix touched only the test expectations. ([fix 947e253b8e](https://github.com/brandonp2412/Flexify/commit/947e253b8e82cea4c3343c8daded4723b66ed7ef)) |
-| 2026-08-27 | [33045818492](https://github.com/brandonp2412/Flexify/actions/runs/33045818492) | 4 | Test assumption/harness | The tests targeted obsolete semantics/weekday presentation. Follow-up commits changed only StartPlanPage test finders/assertions, ultimately locating StepperField controls by component label and descendant EditableText. ([fix 932f808066](https://github.com/brandonp2412/Flexify/commit/932f8080669016081378840c89f1e637dd908779)) |
-| 2026-09-05 | [33935285113](https://github.com/brandonp2412/Flexify/actions/runs/33935285113) | 1 | Test assumption/harness | The assertion expected old empty-state copy No data yet for Graph history test. The fix changed only that test expectation to the existing No history yet for Graph history test UI copy. ([fix ecedb171a2](https://github.com/brandonp2412/Flexify/commit/ecedb171a2b207b2ee2a7b9f8713bd79e3a1c4bc)) |
+| 2025-08-13 | [16934023043](https://github.com/brandonp2412/Flexify/actions/runs/16934023043/attempts/1) | 1 | Test assumption/harness | The retained check annotation says 881 tests passed and 1 failed. The follow-up fix changed only test/plan_list_test.dart, adding the ScrollController newly required by PlansList; application behavior was unchanged. ([fix 90ca6a40d4](https://github.com/brandonp2412/Flexify/commit/90ca6a40d4ac4d1edaa57ae1cd0a6c1f649c40a2)) |
+| 2026-07-18 | [29629498590](https://github.com/brandonp2412/Flexify/actions/runs/29629498590/attempts/1) | 6 | Test assumption/harness | All six assertions still expected the old generic Search... label. The fix changed only tests to the current Search history..., Search graphs..., and Search plans... labels. ([fix 947e253b8e](https://github.com/brandonp2412/Flexify/commit/947e253b8e82cea4c3343c8daded4723b66ed7ef)) |
+| 2026-07-18 | [29630985356](https://github.com/brandonp2412/Flexify/actions/runs/29630985356/attempts/1) | 6 | Test assumption/harness | Same root cause as run 29629498590: six stale Search... text expectations. The eventual fix touched only the test expectations. ([fix 947e253b8e](https://github.com/brandonp2412/Flexify/commit/947e253b8e82cea4c3343c8daded4723b66ed7ef)) |
+| 2026-08-27 | [33045818492](https://github.com/brandonp2412/Flexify/actions/runs/33045818492/attempts/1) | 4 | Test assumption/harness | The tests targeted obsolete semantics/weekday presentation. Follow-up commits changed only StartPlanPage test finders/assertions, ultimately locating StepperField controls by component label and descendant EditableText. ([fix 932f808066](https://github.com/brandonp2412/Flexify/commit/932f8080669016081378840c89f1e637dd908779)) |
+| 2026-09-05 | [33935285113](https://github.com/brandonp2412/Flexify/actions/runs/33935285113/attempts/1) | 1 | Test assumption/harness | The assertion expected old empty-state copy No data yet for Graph history test. The fix changed only that test expectation to the existing No history yet for Graph history test UI copy. ([fix ecedb171a2](https://github.com/brandonp2412/Flexify/commit/ecedb171a2b207b2ee2a7b9f8713bd79e3a1c4bc)) |
 
-The resumable audit state is in [data/flexify/unit_test_failure_audit.json](data/flexify/unit_test_failure_audit.json). Run python flexify_test_failure_study.py sync to inspect only newly seen failed Actions runs while preserving existing manual reviews. Use the rescan flag after changing the detector, then render the README again.
+The resumable audit state is in [data/flexify/unit_test_failure_audit.json](data/flexify/unit_test_failure_audit.json). Run python flexify_test_failure_study.py sync to inspect only newly seen failed Actions attempts while preserving existing manual reviews. Use the rescan flag after changing the detector, then render the README again.
 <!-- flexify-unit-test-failure-study:end -->
 
 ## Chromium

@@ -1,7 +1,11 @@
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 import pandas as pd
 
+import study
 from study import (
     _lag,
     bootstrap_pearson_ci,
@@ -51,6 +55,52 @@ class ParsingTests(unittest.TestCase):
         low, high = bootstrap_pearson_ci([1, 1, 1, 1], [1, 2, 3, 4], iterations=100)
         self.assertTrue(pd.isna(low))
         self.assertTrue(pd.isna(high))
+
+    def test_write_results_regenerates_structural_break_context(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            processed = root / "data" / "processed"
+            processed.mkdir(parents=True)
+            pd.DataFrame([
+                {
+                    "period": "2025",
+                    "unit_line_coverage_pct": 60.9,
+                    "unit_branch_coverage_pct": 50.6,
+                    "cves_reported": 192,
+                }
+            ]).to_csv(processed / "annual.csv", index=False)
+            pd.DataFrame([
+                {"period": "2025Q4", "cves_reported": 54, "complete_period": True},
+                {"period": "2026Q1", "cves_reported": 128, "complete_period": True},
+                {"period": "2026Q2", "cves_reported": 1511, "complete_period": True},
+                {"period": "2026Q3", "cves_reported": 1265, "complete_period": False},
+            ]).to_csv(processed / "quarterly_all.csv", index=False)
+            stats = {
+                "quarterly_same_period_line": {
+                    "n": 20,
+                    "pearson_r": -0.279,
+                    "pearson_bootstrap_95pct_ci": [-0.715, 0.122],
+                    "spearman_rho": -0.505,
+                },
+                "quarterly_next_period_line": {
+                    "n": 19,
+                    "pearson_r": -0.448,
+                    "pearson_bootstrap_95pct_ci": [-0.727, -0.126],
+                    "spearman_rho": -0.523,
+                },
+                "quarterly_same_period_branch": {"pearson_r": -0.276},
+                "full_series_diagnostic_same_period_line": {"pearson_r": 0.221},
+            }
+
+            with patch.object(study, "ROOT", root), patch.object(study, "PROCESSED", processed):
+                study.write_results(stats)
+
+            result = (root / "RESULTS.md").read_text()
+            self.assertIn("**20 complete quarters**", result)
+            self.assertIn("IID quarter resample", result)
+            self.assertIn("| 2026 Q2 | 1,511 |", result)
+            self.assertIn("| 2026 Q3* | 1,265 |", result)
+            self.assertIn("from **-0.279** to **+0.221**", result)
 
     def test_cve_parser_filters_to_stable_desktop_and_dedupes_upstream(self):
         entry = {

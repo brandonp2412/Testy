@@ -340,13 +340,18 @@ def association(frame: pd.DataFrame, x_col: str, y_col: str) -> dict:
     clean = frame[[x_col, y_col]].dropna()
     slope, intercept = linear_fit(clean[x_col], clean[y_col])
     low, high = bootstrap_pearson_ci(clean[x_col], clean[y_col])
+
+    def stable(value: float) -> float:
+        value = float(value)
+        return round(value, 12) if math.isfinite(value) else value
+
     return {
         "n": int(len(clean)),
-        "pearson_r": pearson(clean[x_col], clean[y_col]),
-        "pearson_bootstrap_95pct_ci": [low, high],
-        "spearman_rho": spearman(clean[x_col], clean[y_col]),
-        "ols_slope_cves_per_coverage_point": slope,
-        "ols_intercept": intercept,
+        "pearson_r": stable(pearson(clean[x_col], clean[y_col])),
+        "pearson_bootstrap_95pct_ci": [stable(low), stable(high)],
+        "spearman_rho": stable(spearman(clean[x_col], clean[y_col])),
+        "ols_slope_cves_per_coverage_point": stable(slope),
+        "ols_intercept": stable(intercept),
     }
 
 
@@ -638,14 +643,12 @@ def structural_break_svg(quarterly_all: pd.DataFrame, out: Path) -> None:
 
 def render_charts() -> None:
     CHARTS.mkdir(parents=True, exist_ok=True)
-    coverage = pd.read_csv(RAW / "chromium_unit_coverage_daily.csv")
     annual = pd.read_csv(PROCESSED / "annual.csv")
     quarterly = pd.read_csv(PROCESSED / "quarterly.csv")
     lagged = pd.read_csv(PROCESSED / "quarterly_lag1.csv")
     quarterly_all = pd.read_csv(PROCESSED / "quarterly_all.csv")
 
     annual_dual_svg(annual, CHARTS / "annual_coverage_vs_cves.svg")
-    coverage_history_svg(coverage, CHARTS / "unit_coverage_history.svg")
     scatter_svg(
         quarterly,
         "unit_line_coverage_pct",
@@ -673,27 +676,40 @@ def _fmt(value: float) -> str:
 
 def write_results(stats: dict) -> None:
     annual = pd.read_csv(PROCESSED / "annual.csv")
+    quarterly_all = pd.read_csv(PROCESSED / "quarterly_all.csv")
     q = stats["quarterly_same_period_line"]
     lag = stats["quarterly_next_period_line"]
     branch = stats["quarterly_same_period_branch"]
+    full = stats["full_series_diagnostic_same_period_line"]
+
     rows = [
         f"| {row['period']} | {row['unit_line_coverage_pct']:.2f}% | "
         f"{row['unit_branch_coverage_pct']:.2f}% | {int(row['cves_reported'])} |"
         for _, row in annual.iterrows()
     ]
+
+    break_rows = []
+    for _, row in quarterly_all.iterrows():
+        period = pd.Period(str(row["period"]), freq="Q")
+        if period.year not in {2025, 2026}:
+            continue
+        suffix = "" if bool(row["complete_period"]) else "*"
+        label = f"{period.year} Q{period.quarter}{suffix}"
+        break_rows.append(f"| {label} | {int(row['cves_reported']):,} |")
+
     text = f"""# Results
 
 The primary study window is **{PRIMARY_LABEL}**. Chromium's 2026 data remains downloaded and reproducible, but it is excluded from the headline correlation because Chrome documented a major change in vulnerability discovery and processing in early 2026.
 
 ## Primary result: 2021–2025
 
-Across {q['n']} complete quarters, same-quarter unit-test **line coverage vs reported CVEs** has Pearson **r = {_fmt(q['pearson_r'])}** (naive bootstrap 95% CI {_fmt(q['pearson_bootstrap_95pct_ci'][0])} to {_fmt(q['pearson_bootstrap_95pct_ci'][1])}) and Spearman **rho = {_fmt(q['spearman_rho'])}**.
+Across **{q['n']} complete quarters**, same-quarter unit-test **line coverage vs reported CVEs** has Pearson **r = {_fmt(q['pearson_r'])}** (naive bootstrap 95% CI **{_fmt(q['pearson_bootstrap_95pct_ci'][0])} to {_fmt(q['pearson_bootstrap_95pct_ci'][1])}**) and Spearman **rho = {_fmt(q['spearman_rho'])}**.
 
 Unit-test **branch coverage vs reported CVEs** has Pearson **r = {_fmt(branch['pearson_r'])}**.
 
-Coverage in quarter Q versus CVEs first disclosed in **Q+1**, with both quarters restricted to 2021–2025, has Pearson **r = {_fmt(lag['pearson_r'])}** across {lag['n']} quarter pairs (naive bootstrap 95% CI {_fmt(lag['pearson_bootstrap_95pct_ci'][0])} to {_fmt(lag['pearson_bootstrap_95pct_ci'][1])}; Spearman **rho = {_fmt(lag['spearman_rho'])}**).
+Coverage in quarter Q versus CVEs first disclosed in **Q+1**, with both quarters restricted to 2021–2025, has Pearson **r = {_fmt(lag['pearson_r'])}** across **{lag['n']} quarter pairs** (naive bootstrap 95% CI **{_fmt(lag['pearson_bootstrap_95pct_ci'][0])} to {_fmt(lag['pearson_bootstrap_95pct_ci'][1])}**) and Spearman **rho = {_fmt(lag['spearman_rho'])}**.
 
-These are observational associations, not causal estimates.
+These are observational associations, not causal estimates. The bootstrap is an IID quarter resample and does not fully account for time-series autocorrelation.
 
 ![Primary annual chart](charts/annual_coverage_vs_cves.svg)
 
@@ -709,9 +725,19 @@ Source: {AI_DISCOVERY_SOURCE}
 
 That is a documented structural break in the process generating the dependent variable: the rate at which vulnerabilities are found, processed, fixed and disclosed changed sharply. Including 2026 in the primary correlation would mix two different discovery regimes.
 
+Our downloaded Stable Desktop data makes the discontinuity obvious:
+
+| Quarter | CVEs first disclosed |
+| --- | ---: |
+{chr(10).join(break_rows)}
+
+\\* partial quarter in the current snapshot.
+
 ![2026 structural break](charts/2026_structural_break.svg)
 
 The raw and `*_all.csv` datasets retain 2026 so the exclusion is transparent and reversible. The cutoff was chosen **after the initial analysis revealed the discontinuity**, so this is explicitly a post-hoc comparability decision rather than a preregistered exclusion.
+
+For reference, including all complete quarters in the downloaded series changes the same-quarter Pearson correlation from **{_fmt(q['pearson_r'])}** to **{_fmt(full['pearson_r'])}**. That is why the full series is retained as a diagnostic rather than used as the headline estimate.
 
 ## Annual primary data
 

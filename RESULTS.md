@@ -44,7 +44,7 @@ Our downloaded Stable Desktop data makes the discontinuity obvious:
 
 The raw and `*_all.csv` datasets retain 2026 so the exclusion is transparent and reversible. The cutoff was chosen **after the initial analysis revealed the discontinuity**, so this is explicitly a post-hoc comparability decision rather than a preregistered exclusion.
 
-For reference, blindly including the two complete 2026 quarters flips the same-quarter Pearson correlation from **-0.279** to **+0.221** even though unit-test coverage barely changes. That is why the full series is retained as a diagnostic rather than used as the headline estimate.
+For reference, including all complete quarters in the downloaded series changes the same-quarter Pearson correlation from **-0.279** to **+0.221**. That is why the full series is retained as a diagnostic rather than used as the headline estimate.
 
 ## Annual primary data
 

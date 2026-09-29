@@ -3,17 +3,17 @@
 <text x="70" y="72" fill="#eef3ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" font-weight="700">Quarterly unit-test coverage vs CVE disclosures</text>
 <text x="70" y="108" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">Primary analysis: complete quarters in 2021–2025 · descriptive, not causal</text>
 <rect x="120" y="150" width="1210" height="570" rx="18" fill="#11182b"/>
-<line x1="120" y1="720.0" x2="1330" y2="720.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="720.0" x2="1330" y2="720.0" stroke="#26314d"/>
 <text x="102" y="726.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">27</text>
-<line x1="120" y1="606.0" x2="1330" y2="606.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="606.0" x2="1330" y2="606.0" stroke="#26314d"/>
 <text x="102" y="612.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">50</text>
-<line x1="120" y1="492.0" x2="1330" y2="492.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="492.0" x2="1330" y2="492.0" stroke="#26314d"/>
 <text x="102" y="498.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">73</text>
-<line x1="120" y1="378.0" x2="1330" y2="378.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="378.0" x2="1330" y2="378.0" stroke="#26314d"/>
 <text x="102" y="384.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">96</text>
-<line x1="120" y1="264.0" x2="1330" y2="264.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="264.0" x2="1330" y2="264.0" stroke="#26314d"/>
 <text x="102" y="270.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">119</text>
-<line x1="120" y1="150.0" x2="1330" y2="150.0" stroke="#26314d" stroke-width="1"/>
+<line x1="120" y1="150.0" x2="1330" y2="150.0" stroke="#26314d"/>
 <text x="102" y="156.0" text-anchor="end" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">142</text>
 <text x="120.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">52.4%</text>
 <text x="362.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">54.3%</text>
@@ -21,7 +21,7 @@
 <text x="846.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">58.1%</text>
 <text x="1088.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">60.0%</text>
 <text x="1330.0" y="754" text-anchor="middle" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">61.8%</text>
-<line x1="120.0" y1="448.2" x2="1330.0" y2="560.7" stroke="#ff7b7b" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+<line x1="120.0" y1="448.2" x2="1330.0" y2="560.7" stroke="#ff7b7b" stroke-width="4" stroke-linecap="round"/>
 <circle cx="237.1" cy="561.0" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>
 <text x="247.1" y="551.0" fill="#9daac5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12">2021Q1</text>
 <circle cx="259.3" cy="412.8" r="7" fill="#5de4c7" stroke="#0b1020" stroke-width="3"/>

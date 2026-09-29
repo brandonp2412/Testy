@@ -87,6 +87,28 @@ class FlexifyFailureStudyTests(unittest.TestCase):
         self.assertIn("**2 retained composite `Check` failures**", rendered)
         self.assertIn("1 static analysis", rendered)
 
+    def test_render_ignores_stale_scanned_failure_attempts(self):
+        state = {
+            "history": {
+                "runs_scanned": 2,
+                "attempts_scanned": 2,
+                "oldest_run_at": "2026-01-01T00:00:00Z",
+                "newest_run_at": "2026-01-02T00:00:00Z",
+                "by_attempt_conclusion": {"failure": 2},
+                "failed_attempt_keys": ["1:1", "2:1"],
+                "actions_url": "https://github.com/example/actions",
+            },
+            "scanned_failure_attempts": ["1:1", "99:1"],
+            "unit_test_failure_events": [],
+        }
+
+        rendered = flexify.render_section(state)
+
+        self.assertIn(
+            "| Failed workflow attempts inspected | **1/2 (50.0%)** |",
+            rendered,
+        )
+
     def test_direct_test_step_is_failure_even_without_retained_log(self):
         run_data = {
             "id": 123,
@@ -148,6 +170,7 @@ class FlexifyFailureStudyTests(unittest.TestCase):
         self.assertEqual(history["runs_scanned"], 1)
         self.assertEqual(history["attempts_scanned"], 2)
         self.assertEqual(history["by_attempt_conclusion"]["failure"], 1)
+        self.assertEqual(history["failed_attempt_keys"], ["1:1"])
 
 
 if __name__ == "__main__":

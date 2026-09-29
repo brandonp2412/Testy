@@ -249,6 +249,11 @@ def summarize_history(
         "by_attempt_conclusion": dict(sorted(Counter(
             run.get("conclusion") or "unknown" for run in attempts
         ).items())),
+        "failed_attempt_keys": sorted(
+            failure_attempt_key(run)
+            for run in attempts
+            if run.get("conclusion") == "failure"
+        ),
         "by_workflow": dict(sorted(Counter(run["name"] for run in runs).items())),
         "actions_url": f"https://github.com/{REPO}/actions",
     }
@@ -380,7 +385,14 @@ def render_section(state: dict[str, Any]) -> str:
         "by_attempt_conclusion", history.get("by_conclusion", {})
     ).get("failure", 0)
     attempts_scanned = history.get("attempts_scanned", history.get("runs_scanned", 0))
-    failed_attempts_inspected = len(state.get("scanned_failure_attempts", []))
+    scanned_failure_attempts = set(state.get("scanned_failure_attempts", []))
+    current_failed_attempt_keys = history.get("failed_attempt_keys")
+    if current_failed_attempt_keys is None:
+        failed_attempts_inspected = len(scanned_failure_attempts)
+    else:
+        failed_attempts_inspected = len(
+            scanned_failure_attempts.intersection(current_failed_attempt_keys)
+        )
     manual_exclusions = state.get("manual_exclusions", [])
     composite_reviews = state.get("retained_composite_check_reviews", [])
     composite_test_failures = [
